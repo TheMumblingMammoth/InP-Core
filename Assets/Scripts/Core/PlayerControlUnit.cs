@@ -9,29 +9,20 @@ public class PlayerControlUnit : MonoBehaviour
     }
     [SerializeField] float speed = 1f;
 
+    Vector2 direction;
     void FixedUpdate()
     {
-        
+        transform.position = transform.position + (Vector3)direction * speed * (Input.GetKey(KeyCode.LeftShift) ? 2: 1)* Time.deltaTime;
     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.position = transform.position + new Vector3(0f, 1f, 0f) * speed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.position = transform.position + new Vector3(0f, -1f, 0f) * speed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.position = transform.position + new Vector3(-1f, 0f, 0f) * speed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.position = transform.position + new Vector3(1f, 0f, 0f) * speed * Time.deltaTime;
-        }
+        float x = 0, y = 0;
+        if (Input.GetKey(KeyCode.W)) y = 1;
+        if (Input.GetKey(KeyCode.S)) y = -1;
+        if (Input.GetKey(KeyCode.A)) x = -1;
+        if (Input.GetKey(KeyCode.D)) x = 1;
+        direction = new Vector2(x, y);
     }
 
 }
