@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4463107326331217387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3131219174217864644}
+  - component: {fileID: 9028171388151723380}
+  m_Layer: 0
+  m_Name: Landing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3131219174217864644
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4463107326331217387}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9028171388151723380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4463107326331217387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a484dc2cd68f345438bdfd5c1ad18222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  frames:
+  - pic: {fileID: 21300000, guid: d4d152d51eb5d61439e6e58ec6187d60, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 241a7a30d909c354fb3454039ace9b58, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 566c0362cbbda5c488e625cb6f50556e, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 6223dc32ffc6ac34c9a5210f888553eb, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 456f36d7cbe0dc24f8224ea2f256b90d, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 0af5e4380760a4c4a8419a906c71f2ea, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: da6b64250578f7b4b92fd69309b04946, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 2e13da4aee3153d449b3d81cc3e241cd, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 4e36bc0bb887f8b4f9c5672519e506f9, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: ea2e1f51551d5634ab5706e32c714160, type: 3}
+    delay: 0.25
+  sound: {fileID: 0}

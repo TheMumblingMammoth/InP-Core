@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1218373406280797441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5945767218817271101}
+  - component: {fileID: 5096234767244883222}
+  m_Layer: 0
+  m_Name: Eat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5945767218817271101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218373406280797441}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5096234767244883222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218373406280797441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a484dc2cd68f345438bdfd5c1ad18222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  frames:
+  - pic: {fileID: 21300000, guid: de9efcd98fd8e464ea958c1e80f3ac28, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: e756e98ffee1cbc49947882bc98f09f4, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: ff419dc15c5c1a74180b9368cf400097, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 0d356c2a88f71ae459f0c983553f6930, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 47b21ccce920d5a4ab8bf9c9e42508a9, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: b9d424f67819ca342aab5cf84eb5b192, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 1845056fd1bcd2049b0e8c663fa344e4, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 66ffc3ae0dfc3894ab0d0261e5d01b79, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: e5a71e7be5b74be438c9b3d4a6f16632, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 7caf90e9cd966a74f9e7830e155b4f60, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: e6a74df1ff4fb004b9880d40fde27bf4, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 81b502a49940bc140a8f7dd879ed0ddc, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 737cd81b084c8474ba14265b3f67577e, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 307c181f05a2b824ba4eb043f9254e20, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 08ab8f7cce402fa418527df0773e65a2, type: 3}
+    delay: 0.25
+  sound: {fileID: 0}

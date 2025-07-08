@@ -2,17 +2,15 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using System.IO;
-
 public class Core : MonoBehaviour{
     public const int PPU = 32;
-    public static bool tester = false;
-    public static bool capsLock = false;
+    public static bool IsTester = false;
+    public static bool CapsLock = false;
 
     #region Profile
     
     #endregion Profile    
-    static int timeScale = 1;
+    private static float timeScale = 1;
     public static float TimeScale(){   return timeScale;  }
 
 
