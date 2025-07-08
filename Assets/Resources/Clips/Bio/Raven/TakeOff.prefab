@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6612614269942942957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2149161128143198003}
+  - component: {fileID: 3925483075048270729}
+  m_Layer: 0
+  m_Name: TakeOff
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2149161128143198003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6612614269942942957}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3925483075048270729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6612614269942942957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a484dc2cd68f345438bdfd5c1ad18222, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  frames:
+  - pic: {fileID: 21300000, guid: fed395ea219798a43991da68ac7fbf22, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 525210507fd34504c9edca1508dcc842, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 06e13651ade0a8849ad7b1267cd1f145, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 8270a3dd78989cf47bb8cf637689a27a, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: bc08ef5c4a4582b42acb7aee832bb71c, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 7948660ccac471b4ab179b459687eb68, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 3b7d928cb61c8a644a34d59bc2e914de, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: f5c5ffbb874104b4abdda2c510e7550b, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 55c24291ab84db344b84423b8b85592d, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: c32e725b1c2e3904387c56cd393b8974, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: b512cf2bc0b276f44aee64f69e502e25, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: b540af8b055901e4cae59bcf3d695d69, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: f8ac6c2115c5d044dbdfe7ed48fa527e, type: 3}
+    delay: 0.25
+  sound: {fileID: 0}
