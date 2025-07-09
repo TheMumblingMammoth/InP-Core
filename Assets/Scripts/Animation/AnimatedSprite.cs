@@ -4,32 +4,32 @@ using System.Collections.Generic;
 public class AnimatedSprite : MonoBehaviour{
     
     public SpriteRenderer sprite {get; private set;}
-    [SerializeField] private Clip clip;
-    private Clip futureClip = null;
-    public bool Casual() { return futureClip == null; }
-    [SerializeField] float step;
-    [SerializeField] byte stage;
-    public byte GetStage(){ return stage; }
-    public void SetStage(byte stage){ 
+    [SerializeField] private Clip clip; // анимация
+    private Clip futureClip = null; // хранилище "вспомогательной" анимации 
+    public bool Casual() { return futureClip == null; } // очищает хранилище "вспомогательной" анимации
+    [SerializeField] float step; // хз честно)
+    [SerializeField] byte stage; // номер спрайта(кадра)
+    public byte GetStage(){ return stage; } // получить номер кадра 
+    public void SetStage(byte stage){  // установить кадр
         this.stage = stage;
         if(clip.frames.Length <= stage) this.stage = 0;
     }
 	
-    public float animspeed {get; private set;} = 1;
-	bool forward = true;
-    public bool ended = false;
-    bool stop = false;
+    public float animspeed {get; private set;} = 1; // скорость проигрывания анимации
+	bool forward = true; // направление проигрывания анимации TRUE - слева направо, FALSE - задом на перёд(справа налево)
+    public bool ended = false; // проверка конца анимации
+    bool stop = false; // проверка прекращения анимации
     public float rng = 0;
-    List<DelayedClip> delayed_clips;
+    List<DelayedClip> delayed_clips; // список отложенных анимаций
     bool playing_delayed = false;
-    public bool pause {get; private set;}
+    public bool pause {get; private set;} // проверка остановки анимации
     #region Options
-        public void Stop(){ ended = true; }
-        public void Pause(){ pause = true;}
-        public void Resume(){ pause = false;}
-        public void NormalSpeed(){ animspeed = 1; }
-        public void DoubleSpeed(){ animspeed = 2; }
-        public void CustomSpeed(float speed){ animspeed = speed; }
+        public void Stop(){ ended = true; } // конец анимации
+        public void Pause(){ pause = true;} // остановка анимации
+        public void Resume(){ pause = false;} // возобнавление анимации
+        public void NormalSpeed(){ animspeed = 1; } // установка стандартной скорости - "1"
+        public void DoubleSpeed(){ animspeed = 2; } // установка скорости - "2"
+        public void CustomSpeed(float speed){ animspeed = speed; } // установка своего значения скорости анимации
     #endregion Options
     public void Awake(){
         sprite = GetComponent<SpriteRenderer>();
@@ -107,20 +107,20 @@ public class AnimatedSprite : MonoBehaviour{
             sprite.sprite = clip.frames[stage].pic;        
     }
 
-    public bool FirstFrame(){
+    public bool FirstFrame(){ // проверка - первый ли кадр
         return stage == 0 && step == 0;
     }
 
-    public bool LastFrame(){
+    public bool LastFrame(){ // проверка - последний ли кадр
         return stage == clip.frames.Length - 1 && step >= clip.frames[clip.frames.Length - 1].delay - animspeed;
     }
-    public string CurrentClip(){
+    public string CurrentClip(){ // получение названия текущей анимации
         if(clip != null)
             return clip.name;
         else
             return "";
     }
-    public void ChangeClip(Clip newClip){
+    public void ChangeClip(Clip newClip){ // замена текущей анимации на другую
         if(newClip == clip)
             return;
         playing_delayed = false;
@@ -138,7 +138,7 @@ public class AnimatedSprite : MonoBehaviour{
         }
         ended = false;
     }
-    public void PlayOnce(Clip newClip){
+    public void PlayOnce(Clip newClip){ // проиграть анимацию один раз
         if(!playing_delayed)
             futureClip = clip;
         clip = newClip;
@@ -148,7 +148,7 @@ public class AnimatedSprite : MonoBehaviour{
         sprite.sprite = clip.frames[stage].pic;
         ended = false;       
     }
-    public void PlayOnceThenChange(Clip newClip, Clip nextClip){
+    public void PlayOnceThenChange(Clip newClip, Clip nextClip){ // пороиграть анимацию один раз, затем заменить на другой 
         futureClip = nextClip;
         clip = newClip;
         stop = false;
@@ -157,7 +157,7 @@ public class AnimatedSprite : MonoBehaviour{
         sprite.sprite = clip.frames[0].pic;
         ended = false;
     }
-    public void PlayOnceThenStop(Clip newClip){
+    public void PlayOnceThenStop(Clip newClip){ // проиграть анимацию один раз и остановиться на первом кадре
         futureClip = clip;
         stop = true;
         clip = newClip;
@@ -169,7 +169,7 @@ public class AnimatedSprite : MonoBehaviour{
     public void PlayClipLater(Clip newClip, int delay, bool stop){
         delayed_clips.Add(new DelayedClip(newClip, delay, stop));
     }
-    private void SwapFuture(){
+    private void SwapFuture(){ // сменить нынешнюю анимацию на "вспомогательную"(обычно конец анимации)
         if(stop){
             ended = true;
         }else{
@@ -190,7 +190,7 @@ public class AnimatedSprite : MonoBehaviour{
         sprite.flipX = true;
     }
 
-    public void LastFrameOf(Clip newClip){
+    public void LastFrameOf(Clip newClip){ // установить последний кадр из анимации
         clip = newClip;
         futureClip = null;
         stage = (byte)(clip.frames.Length - 1);

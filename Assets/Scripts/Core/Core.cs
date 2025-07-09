@@ -2,36 +2,36 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-public class Core : MonoBehaviour{
-    public const int PPU = 32;
-    public static bool IsTester = false;
-    public static bool CapsLock = false;
+public class Core : MonoBehaviour{ // Ядро
+    public const int PPU = 32; // Pixel per unit
+    public static bool IsTester = false; // Хз) 0 использований пока
+    public static bool CapsLock = false; // проверка нажатого капслока?
 
     #region Profile
     
     #endregion Profile    
-    private static float timeScale = 1;
-    public static float TimeScale(){   return timeScale;  }
+    private static float timeScale = 1; // Множетель длительности времени(для слоумо или ускорения)PRIVAT
+    public static float TimeScale(){   return timeScale;  } // Getter for param - timeScale
 
 
 
     #region Random
-        public struct RandomToss{
+        public struct RandomToss{ // структура со string - "случай" и float - "значение"
             public string occasion;
             public float value;
-            public RandomToss(string occasion, float value){
+            public RandomToss(string occasion, float value){ // Конструктор с параметрами
                 this.occasion = occasion;
                 this.value = value;                
             }
         }
-        public static List<RandomToss> tosses = new List<RandomToss>(20);
-        public static bool HasRandomToss(string occasion){
+        public static List<RandomToss> tosses = new List<RandomToss>(20); // Список из 20 структур RandomToss
+        public static bool HasRandomToss(string occasion){ // Проверка есть ли у Core заданный "случай" в списке tosses
             foreach(RandomToss toss in tosses)
                 if(toss.occasion.Equals(occasion))
                     return true;
             return false;
         }
-        public static float GetRandomToss(string occasion){
+        public static float GetRandomToss(string occasion){ // Возвращает "значение" выбранного "случая"
             foreach(RandomToss toss in tosses)
                 if(toss.occasion.Equals(occasion))
                     return toss.value;
@@ -43,13 +43,13 @@ public class Core : MonoBehaviour{
     //public static Game game;
     //public static UserInterface ui;
     
-    public static bool gameOn;
-    public static bool isServer;
-    static bool initComplete = false; 
-    public static AudioMixer mixer {get; set;}
+    public static bool gameOn; // Работает ли игра
+    public static bool isServer; // Проверка - запущен ли сервер
+    static bool initComplete = false; // Проверка - создан ли мир
+    public static AudioMixer mixer {get; set;} // предположение: загрузка аудио дорожки?
     //public static MapPresetCollection mapPresetCollection {get; private set;}
     
-    void InfoLoading(){
+    void InfoLoading(){ // загрузка информации
         //CursorManager.Initialize();
         //TextManager.Initialize(TextManager.TextLanguage.Eng);
         /*
@@ -66,8 +66,8 @@ public class Core : MonoBehaviour{
         */
     }
     
-    void Initialisation(){        
-        DontDestroyOnLoad(gameObject);
+    void Initialisation(){ // создание мира
+        //DontDestroyOnLoad(gameObject);
         InfoLoading();
         //BodyClip.Init();
         //Settings.LoadSettings();
@@ -94,27 +94,27 @@ public class Core : MonoBehaviour{
         initComplete = true;
     }
     
-    static bool reset;
-    static float reset_timer;
-    public static void ResetCore(){
+    static bool reset; // Переменная для запуска перезагрузки
+    static float reset_timer; // Таймер для перезагрузки
+    public static void ResetCore(){ // Перезапустить ядро
         reset = true;
         reset_timer = 0.5f;
     }
 
     void Awake(){
-        if(initComplete)
-            DestroyImmediate(gameObject);
-        else
-            Initialisation();
+        if(initComplete) // если создание завершено - уничтожить игровой объект  
+            DestroyImmediate(gameObject); // пока ничего не делает
+        else // иначе - создать мир
+            Initialisation(); 
         //Settings.SetResolution();
         //VE_Manager.SetGamma();
     }
 
     void Update(){
-        if(reset){
-            reset_timer -= Time.deltaTime;
+        if(reset){ // если нужно перезапустить
+            reset_timer -= Time.deltaTime; // отсчёт задержки(таймера)
             if(reset_timer <= 0){
-                Core.gameOn = false;
+                Core.gameOn = false; // выключить игру?
                 Core.loading = false;
                 //LobbyPanel.ResetNames();
                 Core.isServer = false;
@@ -123,18 +123,18 @@ public class Core : MonoBehaviour{
                 Core.reset = false;
             }
         }
-        if(Input.GetKeyDown(KeyCode.KeypadMultiply)){
+        if(Input.GetKeyDown(KeyCode.KeypadMultiply)){ // нажав * тячение времяни ускориться в 2 раза
             timeScale*=2;
             if(timeScale == 0)
                 timeScale = 1;
         }
-        if(Input.GetKeyDown(KeyCode.KeypadDivide))
+        if(Input.GetKeyDown(KeyCode.KeypadDivide)) // нажав / тячение времяни замедлится в 2 раза
             timeScale/=2;
             
     }
 
 
-    public static float FloatTowards(float start, float end, float step){ 
+    public static float FloatTowards(float start, float end, float step){ // возвращает float значение - либо конец (если шаг слишком велик), либо старт+-шаг (в зависимости от конца)
         if(Mathf.Abs(end - start) <= step)
             return end;
         if(end > start)
@@ -142,9 +142,10 @@ public class Core : MonoBehaviour{
         else
             return start - step;
     }
-    public static string load_file_name {get; private set;}
-    public static bool loading {get; private set;} = false;
-    public static void Load(string load_file){
+    // get - публичное чтение значения. private set — установка значения разрешена только внутри класса.
+    public static string load_file_name { get; private set; } // загрузка файла(сцены)
+    public static bool loading {get; private set;} = false; // проверка - идёт ли загрузка
+    public static void Load(string load_file){ // загрузка сцены
         load_file_name = load_file;
         loading = true;
         SceneManager.LoadScene("LobbyScene");

@@ -4,15 +4,15 @@ using System.Collections.Generic;
 public class AnimatedImage : MonoBehaviour{
     
     public Image image {get; private set;}
-    [SerializeField] private Clip clip;
+    [SerializeField] private Clip clip; // Поле куда вставляется клип
     private Clip futureClip = null;
     byte stage; 
     float step;
-	[SerializeField] float animspeed = 1;
+	[SerializeField] float animspeed = 1; // Скорость проигрываемости анимации
 	bool forward = true;
     [SerializeField] float rng = 0;
     [SerializeField] bool cicle = true;
-    public bool ended = false;
+    public bool ended = false; // Проверка конца анимации
     bool stop = false;
     List<DelayedClip> delayed_clips;
     bool playing_delayed;
