@@ -45,5 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  frames: []
+  frames:
+  - pic: {fileID: 21300000, guid: c327c10b4eb238b4a937cd4afdf2d5de, type: 3}
+    delay: 1
   sound: {fileID: 0}
