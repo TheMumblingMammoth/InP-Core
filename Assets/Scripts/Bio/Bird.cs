@@ -51,6 +51,7 @@ public class Bird : MonoBehaviour
             {
                 foreach (Bird otherB in Birds)
                 {
+
                     if (otherB == this || !otherB.onLand) continue;
                     if (Vector3.Distance(otherB.transform.position, transform.position) < 2)
                     {
