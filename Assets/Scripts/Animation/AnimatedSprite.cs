@@ -5,12 +5,12 @@ public class AnimatedSprite : MonoBehaviour{
     
     public SpriteRenderer sprite {get; private set;}
     [SerializeField] private Clip clip; // анимация
-    private Clip futureClip = null; // хранилище "вспомогательной" анимации 
-    public bool Casual() { return futureClip == null; } // очищает хранилище "вспомогательной" анимации
+    private Clip futureClip = null; // Следующий анимация в очереди 
+    public bool IsCasual() { return futureClip == null; } // Проверка наличия анимации в очереди  
     [SerializeField] float step; // хз честно)
     [SerializeField] byte stage; // номер спрайта(кадра)
     public byte GetStage(){ return stage; } // получить номер кадра 
-    public void SetStage(byte stage){  // установить кадр
+    public void SetStage(byte stage){  // установить кадр на начало
         this.stage = stage;
         if(clip.frames.Length <= stage) this.stage = 0;
     }
@@ -138,35 +138,35 @@ public class AnimatedSprite : MonoBehaviour{
         }
         ended = false;
     }
-    public void PlayOnce(Clip newClip){ // проиграть анимацию один раз
-        if(!playing_delayed)
+    public void PlayOnce(Clip newClip)
+    { // проиграть анимацию один раз
+        if (!playing_delayed)
             futureClip = clip;
-        clip = newClip;
-        step = 0;
-        forward = true;
-        stage = 0;
-        sprite.sprite = clip.frames[stage].pic;
-        ended = false;       
+        StartClip(newClip); 
     }
-    public void PlayOnceThenChange(Clip newClip, Clip nextClip){ // пороиграть анимацию один раз, затем заменить на другой 
+    public void PlayOnceThenChange(Clip newClip, Clip nextClip)
+    { // проиграть анимацию один раз, затем заменить на другую
         futureClip = nextClip;
-        clip = newClip;
         stop = false;
-        stage = 0;
-        forward = true;
-        sprite.sprite = clip.frames[0].pic;
-        ended = false;
+        StartClip(newClip);
     }
-    public void PlayOnceThenStop(Clip newClip){ // проиграть анимацию один раз и остановиться на первом кадре
+    public void PlayOnceThenStop(Clip newClip)
+    { // проиграть анимацию один раз и остановиться на последнем кадре
         futureClip = clip;
         stop = true;
+        StartClip(newClip);
+    }
+
+    private void StartClip(Clip newClip)
+    {
         clip = newClip;
         stage = 0;
         forward = true;
         sprite.sprite = clip.frames[0].pic;
         ended = false;
     }
-    public void PlayClipLater(Clip newClip, int delay, bool stop){
+    public void PlayClipLater(Clip newClip, int delay, bool stop)
+    {
         delayed_clips.Add(new DelayedClip(newClip, delay, stop));
     }
     private void SwapFuture(){ // сменить нынешнюю анимацию на "вспомогательную"(обычно конец анимации)
@@ -183,10 +183,10 @@ public class AnimatedSprite : MonoBehaviour{
         sprite.sortingOrder = order;
     }
 
-    public void Left(){
+    public void Left(){ // повернуть картинку влево
         sprite.flipX = false;
     }
-    public void Right(){
+    public void Right(){ // повернуть картинку вправо
         sprite.flipX = true;
     }
 
