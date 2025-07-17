@@ -29,7 +29,7 @@ public class PlayerControlUnit : MonoBehaviour
     #region StaticMethods
         // Передаём точку и радиус, определяем, синглтон персонаж в этом радиусе или нет
         public static bool InRange(Vector2 point, float radius){   return Vector2.Distance(proxy.transform.position, point) < radius;    }
-
+        public static float GetX() { return proxy.transform.position.x; }
     #endregion
 
 }
