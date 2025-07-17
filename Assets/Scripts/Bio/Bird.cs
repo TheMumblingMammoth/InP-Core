@@ -41,9 +41,9 @@ public class Bird : MonoBehaviour
     {
         if (onLand)
         {
-            if (PlayerControlUnit.InRange(transform.position, 2)) // 5
+            if (PlayerControlUnit.InRange(transform.position, 5)) // 5
             {
-                if (PlayerControlUnit.InRange(transform.position, 1)) TakeOff(); //2
+                if (PlayerControlUnit.InRange(transform.position, 2)) TakeOff(); //2
                 else { TurnTo(PlayerControlUnit.GetX()); Flapping(); }
                 return;
             }
@@ -51,7 +51,7 @@ public class Bird : MonoBehaviour
             {
                 foreach (Bird otherB in Birds)
                 {
-                    if (otherB == this) continue;
+                    if (otherB == this || !otherB.onLand) continue;
                     if (Vector3.Distance(otherB.transform.position, transform.position) < 2)
                     {
                         BirdInteraction(otherB);
@@ -61,7 +61,7 @@ public class Bird : MonoBehaviour
             }
             WalkRnd();
         }
-        else if (!PlayerControlUnit.InRange(transform.position, 3)) Landing(); // 5-7
+        else if (!PlayerControlUnit.InRange(transform.position, 7)) Landing(); // 5-7
     }
 
     void WalkRnd() // идти к случайной точке
@@ -131,7 +131,7 @@ public class Bird : MonoBehaviour
     void TakeOff() // взлёт 
     {
         TurnFrom(PlayerControlUnit.GetX());
-        animatedSprite.PlayOnceThenChange(clipSet.ClipFor("TakeOff"), clipSet.ClipFor("Flapping")); // пока не работает из-за проверки в FIXEDUPDATE так что пока буду взлетать и менять на флапинг
+        animatedSprite.PlayOnceThenChange(clipSet.ClipFor("TakeOff"), Clip.NullClip()); // пока не работает из-за проверки в FIXEDUPDATE так что пока буду взлетать и менять на флапинг
         animatedSprite.CustomSpeed(1.5f);
         onLand = false;
     }
@@ -147,7 +147,7 @@ public class Bird : MonoBehaviour
     }
     void Landing() // посадка
     {
-        animatedSprite.PlayOnceThenChange(clipSet.ClipFor("Landing"), clipSet.ClipFor("Eat"));
+        animatedSprite.PlayOnceThenChange(clipSet.ClipFor("Landing"), clipSet.ClipFor("Walk"));
         onLand = true;
     }
     #endregion State
