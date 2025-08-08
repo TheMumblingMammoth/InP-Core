@@ -40,7 +40,7 @@ public class ClipSet : MonoBehaviour{
 
     public bool HasSound(){
         foreach(Clip clip in clips)
-            if(clip.hasSound())
+            if(clip.HasSound())
                 return true;
         return false;
     }

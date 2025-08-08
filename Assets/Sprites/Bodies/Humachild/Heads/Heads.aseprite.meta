@@ -146,7 +146,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: Heads_Frame_1
     originalName: 
-    pivot: {x: 0.5333333, y: -0.7777778}
+    pivot: {x: 0.5333333, y: -0.72222227}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -193,7 +193,7 @@ ScriptedImporter:
       additiveSortOrder: 0
       cellRect:
         x: 16
-        y: 14
+        y: 13
         width: 15
         height: 18
       spriteId: f1fc522c0b6c7084a93e208231eda2a1
