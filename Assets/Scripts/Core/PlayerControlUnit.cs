@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerControlUnit : MonoBehaviour
+public class PlayerControlUnit : NetworkBehaviour
 {
     public static PlayerControlUnit proxy { get; private set; }
     [SerializeField] float speed = 1f; // скорость юнита
@@ -8,7 +9,8 @@ public class PlayerControlUnit : MonoBehaviour
 
     void Awake()
     {
-        proxy = this;
+        if (IsOwner)
+            proxy = this;
     }
     void FixedUpdate()
     {
@@ -18,6 +20,8 @@ public class PlayerControlUnit : MonoBehaviour
 
     void Update()
     {
+        if (!IsOwner)
+            return;
         float x = 0, y = 0;
         if (Input.GetKey(KeyCode.W)) y = 100;
         if (Input.GetKey(KeyCode.S)) y = -100;

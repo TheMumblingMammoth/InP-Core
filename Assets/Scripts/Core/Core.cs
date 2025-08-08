@@ -69,7 +69,7 @@ public class Core : MonoBehaviour{ // Ядро
     void Initialisation(){ // создание мира
         //DontDestroyOnLoad(gameObject);
         InfoLoading();
-        //BodyClip.Init();
+        BodyClip.Init(); // загрузка клипов для тел
         //Settings.LoadSettings();
         //SpriteManager.Init();
         /*Instantiate(Resources.Load<VE_Manager>("Misc/VE"));

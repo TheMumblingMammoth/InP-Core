@@ -11,7 +11,6 @@ public class AnimatedImage : MonoBehaviour{
 	[SerializeField] float animspeed = 1; // Скорость проигрываемости анимации
 	bool forward = true;
     [SerializeField] float rng = 0;
-    [SerializeField] bool cicle = true;
     public bool ended = false; // Проверка конца анимации
     bool stop = false;
     List<DelayedClip> delayed_clips;
