@@ -3,35 +3,29 @@ public class Limb : MonoBehaviour{
     public string type;
     [SerializeField] SpriteRenderer sprite;
     public Vector2 pos {get; private set;}
-    float speed = 1f;
-    void Awake(){
+    void Awake()
+    {
         pos = transform.localPosition;
     }
-    public void SetPos(Vector2 pos){
+    public void SetPos(Vector2 pos)
+    {
         this.pos = pos;
         transform.localPosition = pos;
     }
-    public void SetSkin(int skinID, bool child)
+    public void SetSkin(int skinID)
     {
         if (type == "")
             return;
-        if (!child)
-        {
-            if (BodyClip.skins.HasClipFor(type + "s"))
-                sprite.sprite = BodyClip.skins.ClipFor(type + "s").frames[skinID].pic;
-        }
-        else
-        {
-            if (BodyClip.childSkins.HasClipFor(type + "s"))
-                sprite.sprite = BodyClip.childSkins.ClipFor(type + "s").frames[skinID].pic;
-        }
+        if (BodyClip.skins.HasClipFor(type))
+            sprite.sprite = BodyClip.skins.ClipFor(type).frames[skinID].pic;
     }
     public void SetOrder(int order){
         switch(type){
-            case "Head": order += 3; break;
-            case "Hand": order += 4; break;
-            case "Leg": order += 1; break;
-            case "Torso": order += 2; break;
+            case "Heads": order += 4; break;
+            case "Hands": order += 5; break;
+            case "Feet": order += 1; break;
+            case "Legs": order += 3; break;
+            case "Chests": order += 2; break;
         }
         sprite.sortingOrder = order;
     }

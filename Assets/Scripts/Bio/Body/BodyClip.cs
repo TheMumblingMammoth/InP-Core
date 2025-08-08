@@ -17,7 +17,7 @@ class BodyClip{
         frames = new BodyFrame[size];
         for(int i = 0; i < size; i++){
             time[i] = float.Parse(lines[i].Split(":")[0]);
-            frames[i] = BodyFrame.Parse(7, lines[i].Split(":")[1]);
+            frames[i] = BodyFrame.Parse(9, lines[i].Split(":")[1]);
         }
     }
 
@@ -38,8 +38,8 @@ class BodyClip{
     public static ClipSet childSkins { get; private set; }
     public static void Init() {
         Debug.Log("Body Init");
-        skins = Resources.Load<ClipSet>("Clips/Bodies/Humanoid/HumanoidClipSet");
-        childSkins = Resources.Load<ClipSet>("Clips/Bodies/Humachild/HumachildClipSet");
+        skins = Resources.Load<ClipSet>("Clips/Bodies/Human/HumanClipSet");
+        //childSkins = Resources.Load<ClipSet>("Clips/Bodies/Humachild/HumachildClipSet");
         clips = new Dictionary<string, BodyClip>(100);
         BodyClipXML clipData = BodyClipXML.LoadClips();
         foreach (BodyClipXML.XMLData data in clipData.clips) {

@@ -1,6 +1,6 @@
 using UnityEngine;
 class BodyFrame{
-    int count = 7;
+    public int count { get; private set; }
     Vector2 [] positions;
     float [] rotations;
     public BodyFrame(int count){
