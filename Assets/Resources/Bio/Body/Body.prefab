@@ -900,6 +900,8 @@ MonoBehaviour:
   - 0
   - 0
   state: Stand
+  male: 0
+  size: 0
   child: 0
   skinID: 0
   k: 2

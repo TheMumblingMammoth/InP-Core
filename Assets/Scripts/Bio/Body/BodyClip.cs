@@ -34,7 +34,7 @@ class BodyClip{
         return i > 0 ? i - 1 : size - 1;
     }
     public static Dictionary<string, BodyClip> clips;
-    public static ClipSet skins { get; private set; }
+    public static ClipSet skins { get; private set; }  = Resources.Load<ClipSet>("Clips/Bodies/Human/HumanClipSet");
     public static ClipSet childSkins { get; private set; }
     public static void Init() {
         Debug.Log("Body Init");

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4252453469734772035
+--- !u!1 &9179184883648399919
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1545739468666714505}
-  - component: {fileID: 5761308736364399229}
+  - component: {fileID: 4155483976022706263}
+  - component: {fileID: 3678655717062143838}
   m_Layer: 0
   m_Name: Hands
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1545739468666714505
+--- !u!4 &4155483976022706263
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4252453469734772035}
+  m_GameObject: {fileID: 9179184883648399919}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,13 +32,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5761308736364399229
+--- !u!114 &3678655717062143838
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4252453469734772035}
+  m_GameObject: {fileID: 9179184883648399919}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a484dc2cd68f345438bdfd5c1ad18222, type: 3}
@@ -49,5 +49,13 @@ MonoBehaviour:
   - pic: {fileID: 21300000, guid: 331c1638d2752f24aa27821aafaa2516, type: 3}
     delay: 0.25
   - pic: {fileID: 21300000, guid: 523e352c7b2acce47a61bb7ac1421146, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: add7c5cdd21f4a94f989c28cb2294bf8, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: 9f492b39674cfad44b61cff1fafbf867, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: a6e5c77fb6ca6cc499360ad7c45c80f3, type: 3}
+    delay: 0.25
+  - pic: {fileID: 21300000, guid: f02fbd729a889cd47bb0b9bb93fba8e1, type: 3}
     delay: 0.25
   sound: {fileID: 0}
