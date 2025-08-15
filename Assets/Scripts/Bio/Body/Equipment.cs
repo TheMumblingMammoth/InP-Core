@@ -2,11 +2,12 @@ using UnityEngine;
 public class Equipment : MonoBehaviour
 {
     public Body.EquipmentType type;
-    [SerializeField] SpriteRenderer sprite;
-    [SerializeField] SpriteRenderer color_sprite;
+    SpriteRenderer sprite;
+    //[SerializeField] SpriteRenderer color_sprite;
     public Vector2 pos { get; private set; }
     void Awake()
     {
+        sprite = GetComponent<SpriteRenderer>();
         pos = transform.localPosition;
     }
     public void SetPos(Vector2 pos)

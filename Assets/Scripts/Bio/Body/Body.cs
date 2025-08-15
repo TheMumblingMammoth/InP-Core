@@ -5,6 +5,7 @@ public class Body : MonoBehaviour
     // Unit per Pixel
     const float UPP = 1f / 32f;
     [SerializeField] Limb[] limbs;
+    [SerializeField] Equipment[] equipment;
     [SerializeField] Vector2[] originPositions;
     [SerializeField] float[] originRotations;
 
@@ -146,6 +147,8 @@ public class Body : MonoBehaviour
             order = -(int)(transform.position.y * 1000) + skinID;
             foreach (Limb limb in limbs)
                 limb.SetOrder(order);
+            foreach (Equipment eq in equipment)
+                eq.SetOrder(order);
         }
     }
 
@@ -335,7 +338,7 @@ public class Body : MonoBehaviour
     #region Equipment
     public enum BodyPart
     {
-        LFoot = 1, RFoot = 2, Legs = 0, Chest = 3, LHand = 4, RHand = 5, Head = 6
+        LFoot = 10, RFoot = 12, Legs = 1, Chest = 2, LHand = 21, RHand = 7, Head = 14 
     }
     public static string PartType(BodyPart part){
         switch (part)
@@ -352,9 +355,9 @@ public class Body : MonoBehaviour
     }
     public enum EquipmentType
     {
-        LInHand, RInHand, Belt, Neck,
-        Greaves, Plate, LBracer, RBracer, Helmet, FCloak, BCloak,
-        LBoot, RBoot, Pants, Shirt, LGlove, RGlove, Headwear
+        LInHand = 20, RInHand = 10, Belt = 18, Neck = 19,
+        Greaves = 5, Plate = 6, LBracer = 23, RBracer = 9, Helmet = 15, FCloak = 17, BCloak = -1,
+        LBoot = 11, RBoot = 13, Pants = 3, Shirt = 4, LGlove = 22, RGlove = 8, Headwear = 16
     }
 
     public void EquipmentUpdate()

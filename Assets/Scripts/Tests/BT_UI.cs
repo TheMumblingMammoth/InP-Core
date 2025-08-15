@@ -31,5 +31,24 @@ public class BodyTestUI : MonoBehaviour
                 body.AddEffect(effectName);
     }
 
+    Body.BodyPart[] bodyParts;
+    public static void LimbChoice(string effectName)
+    {
+        foreach (Body body in testBodies)
+            if (body.HasEffect(effectName))
+                body.RemoveEffect(effectName);
+            else
+                body.AddEffect(effectName);
+    }
+    string [] effects;
+    public static void EffectChoice(string effectName)
+    {
+        foreach (Body body in testBodies)
+            if (body.HasEffect(effectName))
+                body.RemoveEffect(effectName);
+            else
+                body.AddEffect(effectName);
+    }
+
     
 }

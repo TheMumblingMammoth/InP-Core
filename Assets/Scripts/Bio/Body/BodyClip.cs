@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 class BodyClip{
-
+    const int LimbsCount = 7;
     public float[] time {get; private set;}
     BodyFrame [] frames;
     public int size {get; private set;}
@@ -17,7 +17,7 @@ class BodyClip{
         frames = new BodyFrame[size];
         for(int i = 0; i < size; i++){
             time[i] = float.Parse(lines[i].Split(":")[0]);
-            frames[i] = BodyFrame.Parse(9, lines[i].Split(":")[1]);
+            frames[i] = BodyFrame.Parse(LimbsCount, lines[i].Split(":")[1]);
         }
     }
 
