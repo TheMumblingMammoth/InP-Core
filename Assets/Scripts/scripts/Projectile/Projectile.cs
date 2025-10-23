@@ -13,5 +13,6 @@ public class Projectile : MonoBehaviour
     {
         // уничтожаем снаряд при любом столкновении 
         Destroy(gameObject);
+        
     }
 }
