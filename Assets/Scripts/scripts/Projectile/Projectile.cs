@@ -9,9 +9,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    void OnCollisionEnter2D(Collision2D collision) 
+    void OnCollisionEnter2D(Collision2D collision)
     {
         // уничтожаем снаряд при любом столкновении 
+        
         Destroy(gameObject);
         
     }
