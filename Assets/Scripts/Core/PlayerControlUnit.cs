@@ -9,8 +9,11 @@ public class PlayerControlUnit : NetworkBehaviour
 
     void Awake()
     {
-        if (IsOwner)
+        if (proxy == null){
             proxy = this;
+            Camera.main.GetComponent<SimpleFollow>().SetTarget(transform);
+            Debug.Log("Owner spawned");
+        }
     }
     void FixedUpdate()
     {
