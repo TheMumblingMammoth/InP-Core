@@ -45,7 +45,7 @@ public class ProjectileTrajectory : MonoBehaviour
     void FixedUpdate()
     {
         float t = Time.time - startTime;    // прошедшее время с начала движения - из текущего момента времени отнимаем время старта
-
+        
         switch (type)   
         {
             case ProjectileType.Linear: // если равноускоренное прямолинейное движение:
@@ -54,8 +54,11 @@ public class ProjectileTrajectory : MonoBehaviour
                 break;
 
             case ProjectileType.Parabolic:  //если движение по параболе:
-                float horizontalDistance = speed * t;
-                float verticalDistance = parabolaHeight * t - 4.9f * t * t;
+                //float tremble = Random.Range(0.15f, 0.5f);
+                float dx = Mathf.Sin(10*t);
+                float dy = Mathf.Cos(10*t);
+                float horizontalDistance = speed * t + dx;
+                float verticalDistance = parabolaHeight * t - 4.9f * t * t + dy;
                 Vector2 parabolicOffset = new Vector2(horizontalDistance, verticalDistance);
                 Vector2 parabolicPos = startPosition + RotateVector(parabolicOffset, initialDirection);
                 rb.MovePosition(parabolicPos);
