@@ -3,7 +3,8 @@ using UnityEngine;
 public class BuilderTool : MonoBehaviour
 {
     public static BuilderTool proxy { get; private set;}
-    public Sprite wall, floor, grass, dirt;
+    public Sprite wall, floor, ceil,  grass, dirt;
+    public TileClipSet wood;
     void Awake()
     {
         proxy = this;
