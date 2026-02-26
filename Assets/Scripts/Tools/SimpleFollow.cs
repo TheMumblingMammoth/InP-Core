@@ -8,6 +8,11 @@ public class SimpleFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (target == null) return;
         transform.position = target.position + distance; // следование за целью камеры
+    }
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
     }
 }

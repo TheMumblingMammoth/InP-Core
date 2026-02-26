@@ -25,7 +25,7 @@ public class SpriteManager: MonoBehaviour{
     }
 
     public static void Init(){
-        //null_sprite = Resources.Load<Sprite>("Sprites/Icons/null");
+        null_sprite = Resources.Load<Sprite>("Sprites/Icons/null");
         //null_sprite = Resources.Load<Sprite>("Sprites/Icons/null");
     }
     

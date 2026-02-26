@@ -71,7 +71,7 @@ public class Core : MonoBehaviour{ // Ядро
         InfoLoading();
         BodyClip.Init(); // загрузка клипов для тел
         //Settings.LoadSettings();
-        //SpriteManager.Init();
+        SpriteManager.Init();
         /*Instantiate(Resources.Load<VE_Manager>("Misc/VE"));
         VE_Manager.Initialize();
         

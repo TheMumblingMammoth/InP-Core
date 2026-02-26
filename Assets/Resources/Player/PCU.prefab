@@ -56,6 +56,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &8522161903770455080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,7 +70,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9742e04a2708dd947804442a3c0f049a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 3
+  size: 0.3
+  pos: {x: 0, y: 0, z: 0}
+  z: 4
 --- !u!212 &6202192843982079610
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -110,10 +115,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -30855127
+  m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3e18c7946f11c894ebc1531f7e0021db, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dc2c8dfe2547e3a40b5b184987beb2b9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
