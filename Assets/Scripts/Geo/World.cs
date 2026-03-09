@@ -59,7 +59,7 @@ public class World : MonoBehaviour
     {
         if (pos.x < 0 || pos.x >= size.x * chunkSize.x ||
             pos.y < 0 || pos.y >= size.y * chunkSize.y ||
-            pos.z < 0 || pos.z >= size.z * chunkSize.z) return Block.Void;
+            pos.z < 0 || pos.z >= size.z * chunkSize.z) return null;
         return main.chunks[pos.z / chunkSize.z][pos.y / chunkSize.y][pos.x / chunkSize.x].voxels[pos.z % chunkSize.z][pos.y % chunkSize.y][pos.x % chunkSize.x];
     }
 

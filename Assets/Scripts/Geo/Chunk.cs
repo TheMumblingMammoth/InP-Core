@@ -16,12 +16,22 @@ public class Chunk
                 voxels[z][y] = new Block[World.chunkSize.x];
                 for(int x = 0; x < World.chunkSize.x; x++)
                 {
-                    if(z < 2)
-                        voxels[z][y][x] = Block.Dirt;
-                    else if(z > 2)
-                        voxels[z][y][x] = Block.Air;
+                    voxels[z][y][x] = new Block();
+                    if(z < 4)
+                    {
+                        voxels[z][y][x].SetFloor(BlockType.Dirt);
+                        voxels[z][y][x].SetWall(BlockType.Dirt);
+                    }
+                    else if(z > 4)
+                    {
+                        voxels[z][y][x].SetFloor(BlockType.Air);
+                        voxels[z][y][x].SetWall(BlockType.Air);
+                    }
                     else
-                        voxels[z][y][x] = Block.Grass;
+                    {
+                        voxels[z][y][x].SetFloor(BlockType.Grass);
+                        voxels[z][y][x].SetWall(BlockType.Air);
+                    }
                 }
             }
         }

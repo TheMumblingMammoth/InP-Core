@@ -1,26 +1,17 @@
 using UnityEngine;
-public class Limb : MonoBehaviour
+public abstract class Limb : MonoBehaviour
 {
     public Body.BodyPart type;
-    [SerializeField] SpriteRenderer sprite;
-    public Vector2 pos {get; private set;}
-    void Awake()
-    {
-        pos = transform.localPosition;
-    }
-    public void SetPos(Vector2 pos)
-    {
-        this.pos = pos;
-        transform.localPosition = pos;
-    }
-    public void SetSkin(int skinID) {   sprite.sprite = BodyClip.skins.ClipFor(Body.PartType(type)).frames[skinID].pic; }
-    public void SetOrder(int order) {   sprite.sortingOrder = order + (int)type;    }
-    public void SetColor(Color color){  sprite.color = color;   }
-    void Update()
-    {
-        //transform.localPosition = pos;
-        //transform.localPosition = Vector2.MoveTowards(transform.localPosition, pos, speed * Time.deltaTime);
-    }
+    public Vector2 pos {get; protected set;}
+    public float alpha {get; protected set;}
+    protected abstract void Awake();
+    public abstract void SetPos(Vector2 pos, float alpha = 0);
+    public abstract Vector2 GetPos();
+    public abstract void SetSkin(int skinID);
+    public abstract void SetOrder(int order); 
+    public abstract void SetColor(Color color);
 
-   
+    public abstract void Flip();
+    [SerializeField] protected bool flipY;
+    public void FlipY(){    flipY = !flipY; }
 }

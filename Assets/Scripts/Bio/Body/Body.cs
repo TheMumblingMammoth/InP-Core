@@ -16,8 +16,19 @@ public class Body : MonoBehaviour
         originRotations = new float[limbs.Length];
         for (int i = 0; i < limbs.Length; i++)
         {
-            originPositions[i] = (Vector2)limbs[i].transform.localPosition;
+            originPositions[i] = limbs[i].GetPos();
             originRotations[i] = limbs[i].transform.localRotation.eulerAngles.z;
+        }
+    }
+
+    public bool flipY {get; private set;}
+    public void FlipY()
+    {    
+        flipY = !flipY;
+        foreach(Limb limb in limbs)
+        {
+            limb.FlipY();
+            limb.SetSkin(skinID);
         }
     }
 
@@ -26,10 +37,9 @@ public class Body : MonoBehaviour
     {
         for (int i = 0; i < limbs.Length; i++)
         {
-            limbs[i].transform.localPosition = originPositions[i];
-            Quaternion q = new Quaternion(0, 0, 0, 1f);
-            q.eulerAngles = new Vector3(0, 0, originRotations[i]);
-            limbs[i].transform.localRotation = q;
+            //Quaternion q = new Quaternion(0, 0, 0, 1f);
+            //q.eulerAngles = new Vector3(0, 0, originRotations[i]);
+            limbs[i].SetPos(originPositions[i], originRotations[i]);
         }
     }
     #region Animation
@@ -48,7 +58,7 @@ public class Body : MonoBehaviour
             float angle = limbs[i].transform.localRotation.eulerAngles.z - originRotations[i];
             if (angle > 180)
                 angle -= 360;
-            frame.Set(i, ((Vector2)limbs[i].transform.localPosition - originPositions[i]) / UPP, angle);
+            frame.Set(i, (limbs[i].GetPos() - originPositions[i]) / UPP, angle);
         }
         return frame;
     }
@@ -79,8 +89,8 @@ public class Body : MonoBehaviour
         BodyFrame frame = previous.MoveTo(current, timer / time, tremblePosition, GetSlug(), GetSway());
         for (int i = 0; i < limbs.Length; i++)
         {
-            limbs[i].SetPos(originPositions[i] + frame.GetPosition(i) * UPP);
-            Quaternion q = new Quaternion(0, 0, 0, 1f);
+            limbs[i].SetPos(originPositions[i] + frame.GetPosition(i) * UPP, originRotations[i] + frame.GetRotation(i));
+            /*Quaternion q = new Quaternion(0, 0, 0, 1f);
             q.eulerAngles = new Vector3(0, 0, originRotations[i] + frame.GetRotation(i));
             if (i == 0)
             {
@@ -90,6 +100,7 @@ public class Body : MonoBehaviour
             }
             else
                 limbs[i].transform.localRotation = q;
+            */
         }
     }
 
@@ -130,21 +141,29 @@ public class Body : MonoBehaviour
 
     void Start()
     {
+        transform.localPosition = new Vector3(0, height, 0);
         ChangeState(state);
-        SetSkin();
+        SetSkin(skinID);
         tremblePosition = new Vector2[limbs.Length];
     }
     int order = 0;
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.CapsLock))
+            animationSpeed  = (animationSpeed + 1) % 2;
+    }
+
     void FixedUpdate()
     {
+        
         if (animationSpeed == 0) return;
         timer += Time.fixedDeltaTime * Core.TimeScale() * animationSpeed;
-        UpdateDelta();
+        //UpdateDelta();
         ApplyClip();
-        if (order != -(int)(transform.position.y * 1000) + skinID)
+        if (order != -(int)((transform.position.y - height) * 1000) + skinID)
         {
-            order = -(int)(transform.position.y * 1000) + skinID;
+            order = -(int)((transform.position.y - height) * 1000) + skinID;
             foreach (Limb limb in limbs)
                 limb.SetOrder(order);
             foreach (Equipment eq in equipment)
@@ -171,8 +190,9 @@ public class Body : MonoBehaviour
     #region State
     [SerializeField] bool male;
     [SerializeField] int size;
+    [SerializeField] float height;
 
-    private int SkinID() { return size + (male ? 0 : 3); }
+    private int SkinID() { return 1; }
 
     List<string> effects = new List<string>(10);
     public void AddEffect(string effect)
@@ -195,19 +215,31 @@ public class Body : MonoBehaviour
         }
         return list;
     }
+
+
     #endregion
 
     #region Skins
     public bool child;
     public int skinID;
     [ContextMenu("SetSkin")]
-    public void SetSkin()
-    {
-        SetSkin(SkinID());
-    }
+    public void SetSkin(){ SetSkin(skinID); }
+    
     public void SetSkin(int skinID)
     {
         this.skinID = skinID;
+        height = HipSize(skinID) + KneeSize(skinID);
+        originPositions[0] = HeadHeight(skinID);
+        originPositions[2] = new Vector2(0, - (ShoulderSize(skinID) + ForearmSize(skinID)));
+        originPositions[3] = new Vector2(0, - (ShoulderSize(skinID) + ForearmSize(skinID)));
+        originPositions[4] = new Vector2(0, - height);
+        originPositions[5] = new Vector2(0, - height);
+        //  ShoulderWidth(skinID)
+        limbs[2].transform.localPosition = new Vector2(ShoulderWidth(skinID), limbs[2].transform.localPosition.y);
+        limbs[3].transform.localPosition = new Vector2(-ShoulderWidth(skinID), limbs[3].transform.localPosition.y);
+        limbs[4].transform.localPosition = new Vector2(HipWidth(skinID), limbs[4].transform.localPosition.y);
+        limbs[5].transform.localPosition = new Vector2(-HipWidth(skinID), limbs[5].transform.localPosition.y);
+          
         foreach (Limb limb in limbs)
             limb.SetSkin(skinID);
     }
@@ -338,19 +370,30 @@ public class Body : MonoBehaviour
     #region Equipment
     public enum BodyPart
     {
-        LFoot = 10, RFoot = 12, Legs = 1, Chest = 2, LHand = 21, RHand = 7, Head = 14 
+        LHip=14, LKnee=10, LFoot = 18,
+        RHip=16, RKnee=12, RFoot = 20,
+        LShoulder=22, LForearm=26, LHand = 30,
+        RShoulder=24, RForearm=28, RHand = 32,
+        Torso = 0, Head = 2, Sex = 3
     }
     public static string PartType(BodyPart part){
         switch (part)
         {
             case BodyPart.RFoot:
-            case BodyPart.LFoot: return "Feet";
+            case BodyPart.LFoot: return "Foot";
+            case BodyPart.RKnee:
+            case BodyPart.LKnee: return "Knee";
+            case BodyPart.RHip:
+            case BodyPart.LHip: return "Hip";
+            case BodyPart.RForearm:
+            case BodyPart.LForearm: return "Forearm";
+            case BodyPart.RShoulder:
+            case BodyPart.LShoulder: return "Shoulder";
             case BodyPart.RHand:
-            case BodyPart.LHand: return "Hands";
-            case BodyPart.Chest: return "Chests";
-            case BodyPart.Legs: return "Legs";
+            case BodyPart.LHand: return "Hand";
+            case BodyPart.Torso: return "Torso";
             default:
-            case BodyPart.Head: return "Heads";
+            case BodyPart.Head: return "Head";
         }
     }
     public enum EquipmentType
@@ -366,4 +409,95 @@ public class Body : MonoBehaviour
     }
     
     #endregion Equipment
+
+
+    #region Sizes
+
+    public static Vector2 HeadHeight(int ID)
+    {
+        switch (ID)
+        {
+            case 0: return new Vector2(0, 2*UPP);
+            case 1:
+            case 2: return new Vector2(0, 0);
+        }
+        return Vector2.zero;
+    }
+    public static float HipWidth(int ID)
+    {
+        switch (ID)
+        {
+            case 0: 
+            case 2:
+                return 3*UPP;
+            case 1:
+                return 4*UPP;
+        }
+        return 0;
+    }
+
+    public static float HipSize(int ID)
+    {
+        switch (ID)
+        {
+            case 0: 
+                return 10*UPP;
+            case 1:
+            case 2: 
+                return 8*UPP;
+        }
+        return 0;
+    }
+
+    public static float KneeSize(int ID)
+    {
+        switch (ID)
+        {
+            case 0: 
+                return 6*UPP;
+            case 1:
+            case 2: 
+                return 5*UPP;   
+        }
+        return 0;
+    }
+
+    public static float ShoulderSize(int ID)
+    {
+        switch (ID)
+        {
+            case 0: 
+                return 12*UPP;
+            case 1: 
+            case 2: 
+                return 10*UPP;
+        }
+        return 0;
+    }
+    public static float ShoulderWidth(int ID)
+    {
+        switch (ID)
+        {
+            case 0: 
+            case 2: 
+                return 10*UPP;
+            case 1: 
+                return 11*UPP;
+        }
+        return 0;
+    }
+
+    public static float ForearmSize(int ID)
+    {
+        switch (ID)
+        {
+            case 0: 
+                return 8*UPP;
+            case 1:
+            case 2: 
+                return 7*UPP;
+        }
+        return 0;
+    }
+    #endregion Sizes
 }

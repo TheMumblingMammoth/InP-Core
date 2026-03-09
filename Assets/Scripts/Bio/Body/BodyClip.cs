@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 class BodyClip{
-    const int LimbsCount = 7;
+    const int LimbsCount = 6;
     public float[] time {get; private set;}
     BodyFrame [] frames;
     public int size {get; private set;}

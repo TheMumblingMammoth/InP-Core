@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 157129740}
   - component: {fileID: 157129743}
   - component: {fileID: 157129744}
+  - component: {fileID: 157129745}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -271,6 +272,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   distance: {x: 0, y: 0, z: -10}
+--- !u!114 &157129745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157129739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaae1093caa358c428c147c333ee6a57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  min: 2
+  max: 5
+  speed: 1
 --- !u!1 &319034852
 GameObject:
   m_ObjectHideFlags: 0
@@ -872,7 +888,7 @@ MonoBehaviour:
   m_DisconnectTimeoutMS: 30000
   ConnectionData:
     Address: 127.0.0.1
-    Port: 7777
+    Port: 7778
     ServerListenAddress: 127.0.0.1
   DebugSimulator:
     PacketDelayMS: 0
@@ -964,7 +980,8 @@ MonoBehaviour:
   ceil: {fileID: 21300000, guid: 587a2c2efed6c3940aa561de15cf502c, type: 3}
   grass: {fileID: 21300000, guid: 456d0d7bf28f48247b0f0503b89d34b9, type: 3}
   dirt: {fileID: 21300000, guid: 2e66c74017eb6124daa2460c0604bbfb, type: 3}
-  wood: {fileID: 1481182317454897085, guid: f97c52e62f3d9f047bfe6ae1aa0aa6d1, type: 3}
+  walls: {fileID: 1481182317454897085, guid: f97c52e62f3d9f047bfe6ae1aa0aa6d1, type: 3}
+  ceils: {fileID: 1481182317454897085, guid: 6e05a660c9e42f441a3e331343c2066b, type: 3}
 --- !u!4 &1717548760
 Transform:
   m_ObjectHideFlags: 0
@@ -1119,6 +1136,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1255,6 +1273,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
