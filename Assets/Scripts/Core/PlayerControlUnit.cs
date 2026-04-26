@@ -70,6 +70,12 @@ public class PlayerControlUnit : NetworkBehaviour
         Rebound();
         pos = new Vector3Int((int)transform.position.x, (int)transform.position.y, z);
         
+        if(!Core.IsOrtho())
+            Persp();
+    }
+    void Persp()
+    {
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
     }
     void Rebound()
     {

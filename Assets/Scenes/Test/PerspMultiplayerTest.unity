@@ -181,8 +181,8 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 1
+  field of view: 10
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  distance: {x: 0, y: 0, z: -10}
+  distance: {x: 0, y: 0, z: -50}
 --- !u!114 &157129745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,13 +279,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157129739}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eaae1093caa358c428c147c333ee6a57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   min: 2
   max: 5
+  minFOV: 30
+  maxFOV: 90
   speed: 1
 --- !u!1 &319034852
 GameObject:
@@ -475,6 +477,10 @@ PrefabInstance:
     - target: {fileID: 8905980185333655365, guid: 0322423bd46a37c428f135e6cea4cd42, type: 3}
       propertyPath: m_Name
       value: Rain
+      objectReference: {fileID: 0}
+    - target: {fileID: 8905980185333655365, guid: 0322423bd46a37c428f135e6cea4cd42, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

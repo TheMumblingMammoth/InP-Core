@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      WoodLog12_0: -6182493669101423087
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

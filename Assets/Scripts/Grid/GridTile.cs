@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 public class GridTile : MonoBehaviour
 {
@@ -66,8 +67,11 @@ public class GridTile : MonoBehaviour
         }
         
         floor.sortingOrder = -pos.y * 1000 + pos.x;
-        wall.sortingOrder = -pos.y * 1000 + pos.x;
+        wall.sortingOrder = -pos.y * 1000 + pos.x + 1;
         ceil.sortingOrder = -(pos.y - 2) * 1000 + pos.x + 1;
+        if(!Core.IsOrtho()){
+            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
+        }
     }
 
 
@@ -110,7 +114,7 @@ public class GridTile : MonoBehaviour
         
     }
 
-    bool IsOver() { return IsOver(Camera.main.ScreenToWorldPoint(Input.mousePosition)); }
+    bool IsOver() { return IsOver(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Mathf.Abs(Camera.main.transform.position.z)))); }
     bool IsOver(Vector2 pos)
     {
         return pos.x >= transform.position.x && pos.y >= transform.position.y
@@ -120,6 +124,8 @@ public class GridTile : MonoBehaviour
 
     private int GetWallID()
     {
+                                return 0; // 
+    
         if (HasWall(World.GetNBlock(pos)))
         {
             if (HasWall(World.GetSBlock(pos)))

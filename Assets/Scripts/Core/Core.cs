@@ -6,7 +6,8 @@ public class Core : MonoBehaviour{ // Ядро
     public const int PPU = 32; // Pixel per unit
     public static bool IsTester = false; // Хз) 0 использований пока
     public static bool CapsLock = false; // проверка нажатого капслока?
-
+    private static bool ortho_or_persp = false;
+    public static bool IsOrtho(){ return ortho_or_persp; }
     #region Profile
     
     #endregion Profile    
