@@ -29,10 +29,11 @@ public class CameraSizer : MonoBehaviour
         else
         {
             if (Input.mouseScrollDelta.y > 0)
-                FoV = Mathf.Min(maxFOV, FoV + 5);
+                FoV = Mathf.Min(maxFOV, FoV + 1);
             if (Input.mouseScrollDelta.y < 0)
-                FoV = Mathf.Max(minFOV, FoV - 5);
-            Camera.main.fieldOfView =  Vector1.MoveTowards(Camera.main.fieldOfView, FoV, Time.deltaTime * speed);
+                FoV = Mathf.Max(minFOV, FoV - 1);
+            FoV =  Vector1.MoveTowards(Camera.main.fieldOfView, FoV, Time.deltaTime * speed);
+            Camera.main.fieldOfView = FoV;
         }
         
     }

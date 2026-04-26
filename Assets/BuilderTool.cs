@@ -5,6 +5,7 @@ public class BuilderTool : MonoBehaviour
     public static BuilderTool proxy { get; private set;}
     public Sprite wall, floor, ceil,  grass, dirt;
     public TileClipSet walls, ceils;
+    public TileClip STUFF;
     void Awake()
     {
         proxy = this;

@@ -3,7 +3,7 @@ using UnityEngine;
 public class GridTile : MonoBehaviour
 {
     [SerializeField] SpriteRenderer tile, frame;
-    [SerializeField] SpriteRenderer floor, ceil, wall;
+    [SerializeField] SpriteRenderer floor, ceil, wall, wallL, wallR;
     [SerializeField] private Vector3Int pos;
     Block block;
     void Awake()
@@ -31,13 +31,14 @@ public class GridTile : MonoBehaviour
         Upload();
 
     }
+    
     void Upload()
     {
         block = World.GetBlock(pos);
         if (block == null)
         {
             floor.sprite = null;
-            wall.sprite = null;
+            SetWallSprite(null);
             ceil.sprite = null;
             return;
         }
@@ -48,12 +49,17 @@ public class GridTile : MonoBehaviour
 
         if (block.GetWall() == BlockType.Void || block.GetWall() == BlockType.Air)
         {
-            wall.sprite = null;    
+            SetWallSprite(null);
         }
         else
         {
             string wall_name = block.GetWall().ToString();
-            wall.sprite = BuilderTool.proxy.walls.ClipFor(wall_name).frames[GetWallID()];
+            if(block.GetWall() == BlockType.Stuff)
+            {
+                SetWallSprite(BuilderTool.proxy.STUFF.frames[(pos.x * 5 + pos.y * 7) % 16]);
+            }
+            else
+                SetWallSprite(BuilderTool.proxy.walls.ClipFor(wall_name).frames[GetWallID()]);
         }
         
         if (block.GetCeil() == BlockType.Void || block.GetCeil() == BlockType.Air)
@@ -67,7 +73,7 @@ public class GridTile : MonoBehaviour
         }
         
         floor.sortingOrder = -pos.y * 1000 + pos.x;
-        wall.sortingOrder = -pos.y * 1000 + pos.x + 1;
+        SetWallOrder(-pos.y * 1000 + pos.x + 1);
         ceil.sortingOrder = -(pos.y - 2) * 1000 + pos.x + 1;
         if(!Core.IsOrtho()){
             transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
@@ -103,10 +109,7 @@ public class GridTile : MonoBehaviour
         if (Input.GetMouseButtonDown(2) && IsOver())
         {
 
-            if (block.GetCeil() != BlockType.Air)
-                block.SetCeil(BlockType.Air);
-            else
-                block.SetCeil(BlockType.WoodLog);
+            block.SetWall(BlockType.Stuff);
             World.SetBlock(pos, block);
             Grid.Upload();
         }
@@ -516,6 +519,25 @@ public class GridTile : MonoBehaviour
             return false;
         return block.GetCeil() != BlockType.Air && block.GetCeil() != BlockType.Void;
     }
+
+    #region Wall
+
+    void SetWallSprite(Sprite sprite)
+    {
+        wall.sprite = sprite;
+        wallL.sprite = sprite;
+        wallR.sprite = sprite;
+    }
+
+    void SetWallOrder(int sortingOrder)
+    {
+        wall.sortingOrder = sortingOrder;    
+        wallL.sortingOrder = sortingOrder-1;
+        wallR.sortingOrder = sortingOrder-2;
+    }
+    
+        
+    #endregion
 
 
 }
