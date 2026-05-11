@@ -18,7 +18,7 @@ public class IsoGrid : MonoBehaviour
             {
                 matrix[i][j] = Instantiate(sample);
                 matrix[i][j].transform.SetParent(transform);
-                matrix[i][j].transform.localPosition = new Vector3( j * IsoGridTile.TileSizeX / 2 - size.x / 2,
+                matrix[i][j].transform.localPosition = new Vector3( j * IsoGridTile.TileSizeX - size.x / 2,
                                                                     i * IsoGridTile.TileSizeY - ((coords.x + j) % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - size.y / 2, 0);
                 matrix[i][j].gameObject.SetActive(true);
             }
@@ -37,6 +37,7 @@ public class IsoGrid : MonoBehaviour
             Snap(new Vector2Int((int)Camera.main.transform.position.x, (int)Camera.main.transform.position.y));
         }
     }
+    
     public static void Upload()
     {
         for(int i = 0; i < proxy.size.y; i++)
@@ -55,12 +56,40 @@ public class IsoGrid : MonoBehaviour
         {
             for(int j = 0; j < size.x; j++)
             {
-                matrix[i][j].transform.localPosition = new Vector3( j * IsoGridTile.TileSizeX / 2 - size.x / 2,
-                                                                    i * IsoGridTile.TileSizeY - ((coords.x + j) % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - size.y / 2, 0);
+                matrix[i][j].transform.localPosition = new Vector3( j * IsoGridTile.TileSizeX - size.x / 2,
+                                                                    i * IsoGridTile.TileSizeY - ((coords.x + j) % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - size.y / 2,
+                                                                    0);
                 
                 matrix[i][j].Upload(coords.x - size.x / 2 + j, coords.y - size.y / 2 + i, World.chunkSize.z / 2);
             }
         }
     }
 
+    #region Focus
+        [SerializeField] GameObject ff;
+        public static void SetFocus(Vector2 pos)
+        {
+            proxy.ff.transform.position = new Vector3(pos.x, pos.y, 0);
+        }
+    #endregion
+
+    public static Vector3Int GoNE(Vector3Int pos)
+    {
+        return new Vector3Int(pos.x + 1, pos.y + (pos.x % 2 == 0 ? 1 : 0), pos.z);
+    }
+
+    public static Vector3Int GoNW(Vector3Int pos)
+    {
+        return new Vector3Int(pos.x - 1, pos.y + (pos.x % 2 == 0 ? 1 : 0), pos.z);
+    }
+
+    public static Vector3Int GoSE(Vector3Int pos)
+    {
+        return new Vector3Int(pos.x + 1, pos.y - (pos.x % 2 == 0 ? 0 : 1), pos.z);
+    }
+
+    public static Vector3Int GoSW(Vector3Int pos)
+    {
+        return new Vector3Int(pos.x - 1, pos.y - (pos.x % 2 == 0 ? 0 : 1), pos.z);
+    }
 }

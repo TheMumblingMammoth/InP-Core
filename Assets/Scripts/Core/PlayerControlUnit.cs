@@ -1,4 +1,6 @@
+using Unity.Mathematics;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerControlUnit : NetworkBehaviour
@@ -66,22 +68,71 @@ public class PlayerControlUnit : NetworkBehaviour
             //transform.position = Vector2.MoveTowards(transform.position, new_pos, -size);
         }        
 
-        pos = new Vector3Int((int)transform.position.x, (int)transform.position.y, z);
+
+
+        pos = CalcPosition(); //new Vector3Int((int)transform.position.x, (int)transform.position.y, z);
+        IsoGrid.SetFocus((Vector2Int)pos);
         Rebound();
-        pos = new Vector3Int((int)transform.position.x, (int)transform.position.y, z);
+        pos = CalcPosition();//new Vector3Int((int)transform.position.x, (int)transform.position.y, z);
         
         if(!Core.IsOrtho())
             Persp();
     }
+
+    Vector3Int CalcPosition()
+    {
+        Vector2 transPos = transform.position;
+        int J = (int)(transPos.x / IsoGridTile.TileSizeX);
+        int I = (int)(transPos.y / IsoGridTile.TileSizeY + (J % 2 == 0 ? 0 : 0.5f));
+
+
+        float dx = transPos.x - J * IsoGridTile.TileSizeX;
+        float dy = transPos.y - I * IsoGridTile.TileSizeY - (J % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - 0.5f;
+         
+        if(dx == 0 || dy == 0)
+            return new Vector3Int(J, I, z);
+        if (dx > 0 && dy > 0)
+        {
+            if(IsoGridTile.TileSizeX - dx > 2 * dy)
+                return IsoGrid.GoNE(new Vector3Int(J, I, z));
+            else 
+                new Vector3Int(J, I, z);
+        }
+        if (dx < 0 && dy > 0)
+        {
+            if (IsoGridTile.TileSizeX + dx > 2 * dy)
+                return IsoGrid.GoNW(new Vector3Int(J, I, z));
+            else 
+                new Vector3Int(J, I, z);
+        }
+        if (dx > 0 && dy < 0)
+        {
+            if (IsoGridTile.TileSizeX - dx > -2 * dy)
+                return IsoGrid.GoSE(new Vector3Int(J, I, z));
+            else
+                new Vector3Int(J, I, z);
+        }
+        if (dx < 0 && dy < 0)
+        {
+            if (IsoGridTile.TileSizeX + dx > -2 * dy)
+                return IsoGrid.GoSE(new Vector3Int(J, I, z));
+            else
+                new Vector3Int(J, I, z);
+        }
+        return new Vector3Int(J, I, z);
+    }
+
     void Persp()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
     }
     void Rebound()
     {
         float x = transform.position.x - pos.x;
         float y = transform.position.y - pos.y;
         float fx = 0, fy = 0;
+
+
         
         if ( World.GetNBlock(pos) != null && World.GetNBlock(pos).HasWall() && size > 1 - y) fy += 1 - size - y;
         if ( World.GetSBlock(pos) != null && World.GetSBlock(pos).HasWall() && size > y) fy += size - y;
