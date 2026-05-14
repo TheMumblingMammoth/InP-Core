@@ -10,6 +10,10 @@ public class Splash : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         
     }
+    public void Reset()
+    {
+        size = 1f;
+    }
     [SerializeField] float a =  1f;
     void FixedUpdate()
     {
@@ -34,6 +38,9 @@ public class Splash : MonoBehaviour
         spriteRenderer.sortingOrder = -(int)(transform.position.y * 1000);
         transform.localScale = new Vector3(1f, 1f, 1f) * size;
         if(size <= 0)
-            Destroy(gameObject, 0.1f);
+        {
+            gameObject.SetActive(false);
+            Rain.splashPool.Add(this);
+        }
     }
 }

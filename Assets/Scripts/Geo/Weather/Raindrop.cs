@@ -25,15 +25,23 @@ public class Raindrop : MonoBehaviour
     void Splash()
     {
         for(int i = 0; i < 5; i++){
-            Splash droplet = Instantiate(sample_droplet);
+            Splash droplet = Rain.PullInactiveSplash();
+            if (droplet == null)
+            {
+                droplet = Instantiate(sample_droplet);
+                droplet.transform.SetParent(transform.parent);
+            }
+            
             droplet.transform.position = transform.position;
             droplet.gameObject.SetActive(true);
             droplet.spot0 = droplet.transform.position;
-            
             float angle = Random.Range(0, 360);
+            droplet.Reset();
             droplet.spot1 = (Vector2)transform.position + new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
         }
-        Destroy(gameObject, 0.1f);
-        enabled = false;
+        //Destroy(gameObject, 0.1f);
+        //enabled = false;
+        gameObject.SetActive(false);
+        Rain.dropPool.Add(this);
     }
 }
