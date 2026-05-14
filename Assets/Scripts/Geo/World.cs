@@ -92,12 +92,12 @@ public class World : MonoBehaviour
     #region DirGetBlock
         public static Block GetNBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x, pos.y + 1, pos.z)); }
         public static Block GetSBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x, pos.y - 1, pos.z)); }
-        public static Block GetWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 1, pos.y, pos.z)); }
-        public static Block GetEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 1, pos.y, pos.z)); }
-        public static Block GetNEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 1, pos.y + 1, pos.z)); }
-        public static Block GetNWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 1, pos.y + 1, pos.z)); }
-        public static Block GetSEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 1, pos.y - 1, pos.z)); }
-        public static Block GetSWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 1, pos.y - 1, pos.z)); }
+        public static Block GetWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 2, pos.y, pos.z)); }
+        public static Block GetEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 2, pos.y, pos.z)); }
+        public static Block GetNEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 1, pos.y + (pos.x % 2 == 0 ? 1 : 0), pos.z)); }
+        public static Block GetNWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 1, pos.y + (pos.x % 2 == 0 ? 1 : 0), pos.z)); }
+        public static Block GetSEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 1, pos.y - (pos.x % 2 == 0 ? 0 : 1), pos.z)); }
+        public static Block GetSWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 1, pos.y - (pos.x % 2 == 0 ? 0 : 1), pos.z)); }
         public static Block GetTBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x, pos.y, pos.z + 1)); }
         public static Block GetBBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x, pos.y, pos.z - 1)); }
     #endregion

@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Shadow
   - 
   - 
   - 
@@ -44,8 +44,14 @@ TagManager:
   - name: Grid
     uniqueID: 3961907957
     locked: 0
+  - name: Shadow
+    uniqueID: 2174890989
+    locked: 0
   - name: OnGrid
     uniqueID: 4264112169
+    locked: 0
+  - name: UI
+    uniqueID: 3514634453
     locked: 0
   m_RenderingLayers:
   - Default

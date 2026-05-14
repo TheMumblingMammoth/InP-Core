@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fachwerk31_0: -2108544935156647863
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
