@@ -4,23 +4,26 @@ public class IsoGrid : MonoBehaviour
     private static IsoGrid proxy;
     [SerializeField] IsoGridTile sample;
     [SerializeField] Vector2Int size;
-    [SerializeField] Vector2Int coords = Vector2Int.zero;
-    IsoGridTile [][] matrix;
+    [SerializeField] Vector3Int coords = new Vector3Int(0, 0, 4);
+    IsoGridTile [][][] matrix;
 
     void Awake()
     {
         proxy = this;
-        matrix = new IsoGridTile[size.y][];
-        for (int i = 0; i < size.y; i++)
-        {
-            matrix[i] = new IsoGridTile[size.x];
-            for (int j = 0; j < size.x; j++)
+        matrix = new IsoGridTile[World.chunkSize.z][][];
+        for (int q = 0; q < World.chunkSize.z; q++){
+            matrix[q] = new IsoGridTile[size.y][];
+            for (int i = 0; i < size.y; i++)
             {
-                matrix[i][j] = Instantiate(sample);
-                matrix[i][j].transform.SetParent(transform);
-                matrix[i][j].transform.localPosition = new Vector3( j * IsoGridTile.TileSizeX - size.x / 2,
-                                                                    i * IsoGridTile.TileSizeY - ((coords.x + j) % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - size.y / 2, 0);
-                matrix[i][j].gameObject.SetActive(true);
+                matrix[q][i] = new IsoGridTile[size.x];
+                for (int j = 0; j < size.x; j++)
+                {
+                    matrix[q][i][j] = Instantiate(sample);
+                    matrix[q][i][j].transform.SetParent(transform);
+                    matrix[q][i][j].transform.localPosition = new Vector3( j * IsoGridTile.TileSizeX - size.x / 2,
+                                                                        (i + q) * IsoGridTile.TileSizeY - ((coords.x + j) % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - size.y / 2, q);
+                    matrix[q][i][j].gameObject.SetActive(true);
+                }
             }
         }
     }
@@ -34,33 +37,39 @@ public class IsoGrid : MonoBehaviour
     {
         if(Vector2.Distance(Camera.main.transform.position, transform.position) >= 1.5f)
         {
-            Snap(new Vector2Int((int)Camera.main.transform.position.x, (int)Camera.main.transform.position.y));
+            Snap(new Vector3Int((int)Camera.main.transform.position.x, (int)Camera.main.transform.position.y, 4));
         }
     }
     
     public static void Upload()
     {
-        for(int i = 0; i < proxy.size.y; i++)
+        for(int q = 0; q < World.chunkSize.z; q++)
         {
-            for(int j = 0; j < proxy.size.x; j++)
+            for(int i = 0; i < proxy.size.y; i++)
             {
-                proxy.matrix[i][j].Upload(proxy.coords.x - proxy.size.x / 2 + j, proxy.coords.y - proxy.size.y /2 + i, World.chunkSize.z / 2);
+                for(int j = 0; j < proxy.size.x; j++)
+                {
+                    proxy.matrix[q][i][j].Upload(proxy.coords.x - proxy.size.x / 2 + j, proxy.coords.y - proxy.size.y /2 + i, q);
+                }
             }
         }
     }
-    void Snap(Vector2Int coords)
+    void Snap(Vector3Int coords)
     {
         this.coords = coords;
-        transform.position = (Vector2)coords;
-        for(int i = 0; i < size.y; i++)
+        transform.position = new Vector3(coords.x, coords.y, 0);
+        for(int q = 0; q < World.chunkSize.z; q++)
         {
-            for(int j = 0; j < size.x; j++)
+            for(int i = 0; i < size.y; i++)
             {
-                matrix[i][j].transform.localPosition = new Vector3( j * IsoGridTile.TileSizeX - size.x / 2,
-                                                                    i * IsoGridTile.TileSizeY - ((coords.x + j) % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - size.y / 2,
-                                                                    0);
-                
-                matrix[i][j].Upload(coords.x - size.x / 2 + j, coords.y - size.y / 2 + i, World.chunkSize.z / 2);
+                for(int j = 0; j < size.x; j++)
+                {
+                    matrix[q][i][j].transform.localPosition = new Vector3( j * IsoGridTile.TileSizeX - size.x / 2,
+                                                                        (i+q) * IsoGridTile.TileSizeY - ((coords.x + j) % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - size.y / 2,
+                                                                        0);
+                    
+                    matrix[q][i][j].Upload(coords.x - size.x / 2 + j, coords.y - size.y / 2 + i, q);
+                }
             }
         }
     }

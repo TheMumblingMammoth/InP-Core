@@ -7,12 +7,8 @@ public enum BlockType
 
 public class Block 
 {
-    private BlockType floor = BlockType.Void, wall = BlockType.Void, ceil = BlockType.Void;
-    public BlockType GetFloor(){ return floor; }
-    public void SetFloor(BlockType floor){ this.floor = floor; }
-    public BlockType GetWall(){ return wall; }
-    public void SetWall(BlockType wall){ this.wall = wall; }
-    public BlockType GetCeil(){ return ceil; }
-    public void SetCeil(BlockType ceil){ this.ceil = ceil; }
-    public bool HasWall(){  return wall != BlockType.Void && wall != BlockType.Air; }
+    private BlockType block = BlockType.Void;
+    public BlockType GetBlock(){ return block; }
+    public void SetBlock(BlockType block){ this.block = block; }
+    public bool HasBlock(){  return block != BlockType.Void && block != BlockType.Air; }
 }

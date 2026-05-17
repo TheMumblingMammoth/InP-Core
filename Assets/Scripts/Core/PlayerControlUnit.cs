@@ -52,12 +52,12 @@ public class PlayerControlUnit : NetworkBehaviour
         
         UpdateBodyAnimation();        
         
-        if (World.GetBlock(new_front, z) != null && World.GetBlock(new_front, z).HasWall())
+        if (World.GetBlock(new_front, z) != null && World.GetBlock(new_front, z).HasBlock())
         {
             aim = World.GetClosestToBlock((Vector2)transform.position, new_front);
             transform.position = Vector2.MoveTowards(aim, transform.position, size/2);
         }
-        else if (World.GetBlock(new_pos, z) != null && World.GetBlock(new_pos, z).HasWall())
+        else if (World.GetBlock(new_pos, z) != null && World.GetBlock(new_pos, z).HasBlock())
         {
             aim = World.GetClosestToBlock((Vector2)transform.position, new_pos);
             transform.position = Vector2.MoveTowards(aim, transform.position, size/2);
@@ -134,27 +134,27 @@ public class PlayerControlUnit : NetworkBehaviour
 
 
         
-        if ( World.GetNBlock(pos) != null && World.GetNBlock(pos).HasWall() && size > 1 - y) fy += 1 - size - y;
-        if ( World.GetSBlock(pos) != null && World.GetSBlock(pos).HasWall() && size > y) fy += size - y;
-        if ( World.GetEBlock(pos) != null && World.GetEBlock(pos).HasWall() && size > 1 - x)   fx += 1 - size - x;
-        if ( World.GetWBlock(pos) != null && World.GetWBlock(pos).HasWall() && size > x)       fx += size - x;
+        if ( World.GetNBlock(pos) != null && World.GetNBlock(pos).HasBlock() && size > 1 - y) fy += 1 - size - y;
+        if ( World.GetSBlock(pos) != null && World.GetSBlock(pos).HasBlock() && size > y) fy += size - y;
+        if ( World.GetEBlock(pos) != null && World.GetEBlock(pos).HasBlock() && size > 1 - x)   fx += 1 - size - x;
+        if ( World.GetWBlock(pos) != null && World.GetWBlock(pos).HasBlock() && size > x)       fx += size - x;
 
-        if ( World.GetNEBlock(pos) != null && World.GetNEBlock(pos).HasWall() && size > 1 - y && size > 1 - x)
+        if ( World.GetNEBlock(pos) != null && World.GetNEBlock(pos).HasBlock() && size > 1 - y && size > 1 - x)
         {
             fy += (1 - size - y)/2;
             fx += (1 - size - x)/2;
         }
-        if ( World.GetNWBlock(pos) != null && World.GetNWBlock(pos).HasWall() && size > 1 - y && size > x)
+        if ( World.GetNWBlock(pos) != null && World.GetNWBlock(pos).HasBlock() && size > 1 - y && size > x)
         {
             fy += (1 - size - y)/2;
             fx += (size - x)/2;
         }
-        if ( World.GetSEBlock(pos) != null && World.GetSEBlock(pos).HasWall() && size > y && size > 1 - x)
+        if ( World.GetSEBlock(pos) != null && World.GetSEBlock(pos).HasBlock() && size > y && size > 1 - x)
         {
             fy += (size - y)/2;
             fx += (1 - size - x)/2;
         }
-        if ( World.GetSWBlock(pos) != null && World.GetSWBlock(pos).HasWall() && size > y && size > x)
+        if ( World.GetSWBlock(pos) != null && World.GetSWBlock(pos).HasBlock() && size > y && size > x)
         {
             fy += (size - y)/2;
             fx += (size - x)/2;

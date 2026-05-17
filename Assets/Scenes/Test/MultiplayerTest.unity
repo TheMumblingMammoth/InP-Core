@@ -474,13 +474,17 @@ PrefabInstance:
       propertyPath: intens
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 2158844784100859344, guid: 0322423bd46a37c428f135e6cea4cd42, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8905980185333655365, guid: 0322423bd46a37c428f135e6cea4cd42, type: 3}
       propertyPath: m_Name
       value: Rain
       objectReference: {fileID: 0}
     - target: {fileID: 8905980185333655365, guid: 0322423bd46a37c428f135e6cea4cd42, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1630,6 +1634,10 @@ PrefabInstance:
     - target: {fileID: 2343338773709815142, guid: 4fabbe827b7b1ca44a5cdf8e024fca48, type: 3}
       propertyPath: size.y
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2343338773709815142, guid: 4fabbe827b7b1ca44a5cdf8e024fca48, type: 3}
+      propertyPath: size.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5831530620708311155, guid: 4fabbe827b7b1ca44a5cdf8e024fca48, type: 3}
       propertyPath: m_Name

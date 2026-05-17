@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8023795737580908291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 222710105910039016}
+  - component: {fileID: 8120394768783600806}
+  m_Layer: 0
+  m_Name: Grass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &222710105910039016
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8023795737580908291}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8120394768783600806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8023795737580908291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a19db7d0a57974246b804dc04ea37b3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: 21300000, guid: 456d0d7bf28f48247b0f0503b89d34b9, type: 3}
+  - {fileID: 21300000, guid: 5d3032ce7735310438fd556ecc572c5d, type: 3}
+  - {fileID: 21300000, guid: e8cf509efbb8b3c4ba4d76e98879f277, type: 3}
+  - {fileID: 21300000, guid: 37077cdc544a8b14ebd2fa86a5f24c8b, type: 3}
+  - {fileID: 21300000, guid: 5ea277ee817076a44b9d9205c37fa4df, type: 3}
+  - {fileID: 21300000, guid: 0c7e5e4e5496dda4c9f9554b3f9ba68d, type: 3}
+  - {fileID: 21300000, guid: e635737a30fc6084fbe2e06a6f35d83f, type: 3}
+  - {fileID: 21300000, guid: 6229cfcb2842a764a8c2e014531e730c, type: 3}
+  - {fileID: 21300000, guid: f20a70e2bafd7e046a75e09140db4f0d, type: 3}
+  - {fileID: 21300000, guid: 8fe7067f95e9589499027545f7fb8d6b, type: 3}
+  - {fileID: 21300000, guid: ec8d0cdf2b260b04fb2192f36a887b6e, type: 3}
+  - {fileID: 21300000, guid: 0bf6f6bfedb6f5544a1c0f24f5b71181, type: 3}
+  - {fileID: 21300000, guid: fa91fbaf82165fe4bbb7c415f4bf98bd, type: 3}
+  - {fileID: 21300000, guid: fa6364bb00935cd4fafcf3d7206097b9, type: 3}

@@ -1,13 +1,16 @@
 using System;
+using System.Security.Cryptography;
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 public class IsoGridTile : MonoBehaviour
 {
     public const float TileSizeX = 31/32f, TileSizeY = 1;
     [SerializeField] SpriteRenderer tile, frame;
-    [SerializeField] SpriteRenderer floor, ceil, wall, wallL, wallR;
+    [SerializeField] SpriteRenderer blockSprite;
     [SerializeField] private Vector3Int pos;
-    Block block;
+    Block blockData;
+    
     void Awake()
     {
         tile.enabled = false;
@@ -36,91 +39,74 @@ public class IsoGridTile : MonoBehaviour
     
     void Upload()
     {
-        block = World.GetBlock(pos);
-        if (block == null)
+        blockData = World.GetBlock(pos);
+        if (blockData == null)
         {
-            floor.sprite = null;
             SetWallSprite(null);
-            ceil.sprite = null;
             return;
         }
-        if (block.GetFloor() == BlockType.Grass)
-        {
-            floor.sprite = BuilderTool.proxy.grass;
-        }
+        
 
         
-        if (block.GetWall() == BlockType.Void || block.GetWall() == BlockType.Air)
+        if (blockData.GetBlock() == BlockType.Void || blockData.GetBlock() == BlockType.Air)
         {
             SetWallSprite(null);
         }
         else
         {
-            string wall_name = block.GetWall().ToString();
-            if(block.GetWall() == BlockType.Stuff)
+            string wall_name = blockData.GetBlock().ToString();
+            if(blockData.GetBlock() == BlockType.Stuff)
             {
                 Debug.Log("ss;");
                 SetWallSprite(BuilderTool.proxy.STUFF.frames[(pos.x * 5 + pos.y * 7) % 16]);
             }
             else
-            if(block.GetWall() == BlockType.Dirt)
+            if(blockData.GetBlock() == BlockType.Dirt || blockData.GetBlock() == BlockType.Grass)
                 SetWallSprite(BuilderTool.proxy.walls.ClipFor(wall_name).frames[GetWallID()]);
             else
                 SetWallSprite(BuilderTool.proxy.walls.ClipFor(wall_name).frames[0]);
         }
         
-        if (block.GetCeil() == BlockType.Void || block.GetCeil() == BlockType.Air)
-        {
-            ceil.sprite = null;    
-        }
-        else
-        {
-            string ceil_name = block.GetCeil().ToString();
-            ceil.sprite = BuilderTool.proxy.ceils.ClipFor(ceil_name).frames[0];
-        }
         
         
         if(!Core.IsOrtho()){
             transform.position = new Vector3(transform.position.x, transform.position.y);
         }
 
-        floor.sortingOrder = -(int)(transform.position.y * 1000) + pos.x;
-        SetWallOrder(-(int)(transform.position.y * 1000 - 1) + pos.x + 1);
-        ceil.sortingOrder = -(int)(transform.position.y - 2 * 1000) + pos.x + 1;
+        SetWallOrder(-(int)((transform.position.y - pos.z) * 1000 - 1 - pos.z) + pos.x + 1);
+        
     }
 
 
 
     void Update()
     {
-        if (block == null)
+        if (blockData == null)
             return;
-        if (Input.GetMouseButtonDown(0) && IsMouseOver())
+        if(IsMouseOver())
+            blockSprite.color = Color.green;
+        else
         {
-
-            if (block.GetWall() != BlockType.Air)
-                block.SetWall(BlockType.Air);
-            else
-                block.SetWall(BlockType.Dirt);
-            World.SetBlock(pos, block);
+            blockSprite.color = Color.white;
+            return;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+    
+            if(pos.z < World.chunkSize.z - 1)
+                World.GetTBlock(pos).SetBlock(BlockType.Grass);
             IsoGrid.Upload();
         }
-        if (Input.GetMouseButtonDown(1) && IsMouseOver())
+        if (Input.GetMouseButtonDown(1))
         {
-
-            if (block.GetWall() != BlockType.Air)
-                block.SetWall(BlockType.Air);
-            else
-                block.SetWall(BlockType.Fachwerk);
-            World.SetBlock(pos, block);
+            if(pos.z > 0)
+            World.GetBlock(pos).SetBlock(BlockType.Air);
             IsoGrid.Upload();
         }
-        if (Input.GetMouseButtonDown(2) && IsMouseOver())
+        if (Input.GetMouseButtonDown(2))
         {
-
-            
-            block.SetWall(BlockType.Stuff);
-            World.SetBlock(pos, block);
+            blockData.SetBlock(BlockType.Stuff);
+            World.SetBlock(pos, blockData);
             IsoGrid.Upload();
         }
         
@@ -129,6 +115,10 @@ public class IsoGridTile : MonoBehaviour
 
     bool IsMouseOver()
     {
+        if(HasWall(World.GetTBlock(pos)))
+            return false;
+        if(HasNoWall(World.GetBlock(pos)))
+            return false;
         return IsOver(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
     bool IsOver(Vector2 aim) { 
@@ -158,99 +148,100 @@ public class IsoGridTile : MonoBehaviour
     {
         if(block == null)
             return false;
-        return block.GetWall() != BlockType.Air && block.GetWall() != BlockType.Void;
+        return block.GetBlock() != BlockType.Air && block.GetBlock() != BlockType.Void;
     }
-
-    static bool HasCeil(Block block)
+    static bool HasNoWall(Block block)
     {
         if(block == null)
-            return false;
-        return block.GetCeil() != BlockType.Air && block.GetCeil() != BlockType.Void;
+            return true;
+        return !HasWall(block);
     }
+
 
     #region Wall
 
     void SetWallSprite(Sprite sprite)
     {
-        wall.sprite = sprite;
-        wallL.sprite = sprite;
-        wallR.sprite = sprite;
+        blockSprite.sprite = sprite;
     }
 
     void SetWallOrder(int sortingOrder)
     {
-        wall.sortingOrder = sortingOrder;    
-        wallL.sortingOrder = sortingOrder-1;
-        wallR.sortingOrder = sortingOrder-2;
+        blockSprite.sortingOrder = sortingOrder;    
     }
     
         
     #endregion
 
-    public void SetColor(Color color)
-    {
-        floor.color = color;
-        Debug.Log("WTF");
-    }
-
     #region Neigh
     private int GetWallID()
     {
-        if (FullIsoNeighs(pos)&&!HasWall(World.GetSBlock(pos)))
+        if(FullIsoNeighs(pos) && HasNoWall(World.GetSBlock(pos)))
             return 9;
-
-        if (FullIsoNeighs(pos)&&!HasWall(World.GetEBlock(pos)))
+        if(FullIsoNeighs(pos) && HasNoWall(World.GetEBlock(pos)))
             return 10;
-        
-        if (FullIsoNeighs(pos)&&!HasWall(World.GetWBlock(pos)))
+        if(FullIsoNeighs(pos) && HasNoWall(World.GetWBlock(pos)))
             return 11;
-        
-        if (FullIsoNeighs(pos)&&!HasWall(World.GetNBlock(pos)))
+        if(FullIsoNeighs(pos) && HasNoWall(World.GetNBlock(pos)))
             return 12;
 
-        if ( HasWall(World.GetNEBlock(pos))
-          && HasWall(World.GetSEBlock(pos))
-          &&!HasWall(World.GetNWBlock(pos))
-          &&!HasWall(World.GetSWBlock(pos)))
+        if(FullIsoNeighs(pos) || EmptyIsoNeighs(pos))
+            return 0;
+        
+        if(HasWall(World.GetNEBlock(pos)) && HasWall(World.GetNWBlock(pos)) 
+        && HasNoWall(World.GetSEBlock(pos)) && HasNoWall(World.GetSWBlock(pos)))
             return 5;
 
-        if ( HasWall(World.GetNEBlock(pos))
-          && HasWall(World.GetNWBlock(pos))
-          &&!HasWall(World.GetSEBlock(pos))
-          &&!HasWall(World.GetSWBlock(pos)))
+        if(HasWall(World.GetNEBlock(pos)) && HasWall(World.GetSEBlock(pos)) 
+        && HasNoWall(World.GetNWBlock(pos)) && HasNoWall(World.GetSWBlock(pos)))
             return 6;
 
-        if ( HasWall(World.GetNWBlock(pos))
-          && HasWall(World.GetSWBlock(pos))
-          &&!HasWall(World.GetNEBlock(pos))
-          &&!HasWall(World.GetSEBlock(pos)))
+        if(HasWall(World.GetNWBlock(pos)) && HasWall(World.GetSWBlock(pos)) 
+        && HasNoWall(World.GetNEBlock(pos)) && HasNoWall(World.GetSEBlock(pos)))
             return 7;
 
-        if ( HasWall(World.GetSEBlock(pos))
-          && HasWall(World.GetSWBlock(pos))
-          &&!HasWall(World.GetNEBlock(pos))
-          &&!HasWall(World.GetNWBlock(pos)))
+        if(HasWall(World.GetSEBlock(pos)) && HasWall(World.GetSWBlock(pos)) 
+        && HasNoWall(World.GetNEBlock(pos)) && HasNoWall(World.GetNWBlock(pos)))
             return 8;
-        
-        if (HasWall(World.GetNEBlock(pos)) &&!HasWall(World.GetSWBlock(pos)))
+
+        if((HasWall(World.GetNEBlock(pos)) && HasNoWall(World.GetNWBlock(pos)) && HasNoWall(World.GetSEBlock(pos)) && HasNoWall(World.GetSWBlock(pos)))
+        || (HasWall(World.GetNEBlock(pos)) && HasWall(World.GetNWBlock(pos)) && HasWall(World.GetSEBlock(pos)) && HasWall(World.GetSWBlock(pos))))
             return 1;
-
-        if (HasWall(World.GetNWBlock(pos)) &&!HasWall(World.GetSEBlock(pos)))
+        if((HasWall(World.GetNWBlock(pos)) && HasNoWall(World.GetNEBlock(pos)) && HasNoWall(World.GetSWBlock(pos)) && HasNoWall(World.GetSEBlock(pos)))
+        || (HasWall(World.GetNWBlock(pos)) && HasWall(World.GetNEBlock(pos)) && HasWall(World.GetSWBlock(pos)) && HasWall(World.GetSEBlock(pos))))
             return 2;
-
-        if (HasWall(World.GetSEBlock(pos)) &&!HasWall(World.GetNWBlock(pos)))
+        if((HasWall(World.GetSEBlock(pos)) && HasNoWall(World.GetSWBlock(pos)) && HasNoWall(World.GetNEBlock(pos)) && HasNoWall(World.GetNWBlock(pos)))
+        || (HasWall(World.GetSEBlock(pos)) && HasWall(World.GetSWBlock(pos)) && HasWall(World.GetNEBlock(pos)) && HasWall(World.GetNWBlock(pos))))
             return 3;
-
-        if (HasWall(World.GetSWBlock(pos)) &&!HasWall(World.GetNEBlock(pos)))
+        if((HasWall(World.GetSWBlock(pos)) && HasNoWall(World.GetSEBlock(pos)) && HasNoWall(World.GetNWBlock(pos)) && HasNoWall(World.GetNEBlock(pos)))
+        || (HasWall(World.GetSWBlock(pos)) && HasWall(World.GetSEBlock(pos)) && HasWall(World.GetNWBlock(pos)) && HasWall(World.GetNEBlock(pos))))
             return 4;
+
+            /*if(FullIsoNeighs(pos) || EmptyIsoNeighs(pos) ||
+           (HasWall(World.GetNEBlock(pos)) && HasWall(World.GetSWBlock(pos))
+            && HasNoWall(World.GetSEBlock(pos)) && HasNoWall(World.GetNWBlock(pos))
+           )||
+           (HasWall(World.GetNWBlock(pos)) && HasWall(World.GetSEBlock(pos))
+            && HasNoWall(World.GetSWBlock(pos)) && HasNoWall(World.GetNEBlock(pos))
+           ))
+            return 0;*/
 
         return 0;
     }
 
+    static int CountIsoNeighs(Vector3Int pos)
+    {
+        int n = 0;
+        if (HasWall(World.GetNEBlock(pos))) n++;
+        if (HasWall(World.GetNWBlock(pos))) n++;
+        if (HasWall(World.GetSEBlock(pos))) n++;
+        if (HasWall(World.GetSWBlock(pos))) n++;
+        return n;
+    }
     static bool EmptyIsoNeighs(Vector3Int pos)
     {
-        return !HasWall(World.GetNEBlock(pos)) && !HasWall(World.GetNWBlock(pos))
-             &&!HasWall(World.GetSEBlock(pos)) && !HasWall(World.GetSWBlock(pos));
+        return (!HasWall(World.GetNEBlock(pos))) && (!HasWall(World.GetNWBlock(pos)))
+             &&(!HasWall(World.GetSEBlock(pos))) && (!HasWall(World.GetSWBlock(pos)));
     }
     static bool FullIsoNeighs(Vector3Int pos)
     {

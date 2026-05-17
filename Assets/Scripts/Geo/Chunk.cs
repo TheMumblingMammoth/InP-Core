@@ -17,21 +17,24 @@ public class Chunk
                 for(int x = 0; x < World.chunkSize.x; x++)
                 {
                     voxels[z][y][x] = new Block();
-                    if(z < 4)
+                    
+                    if( (Mathf.PerlinNoise(x / 5f, y / 7f) + Mathf.PerlinNoise(x / 17f, (y + 3) / 13f)) + 1 > z)
                     {
-                        voxels[z][y][x].SetFloor(BlockType.Dirt);
-                        voxels[z][y][x].SetWall(BlockType.Dirt);
-                    }
-                    else if(z > 4)
-                    {
-                        voxels[z][y][x].SetFloor(BlockType.Air);
-                        voxels[z][y][x].SetWall(BlockType.Air);
-                    }
+                        voxels[z][y][x].SetBlock(BlockType.Grass);
+                    }                    
                     else
                     {
-                        voxels[z][y][x].SetFloor(BlockType.Grass);
-                        voxels[z][y][x].SetWall(BlockType.Air);
+                        voxels[z][y][x].SetBlock(BlockType.Air);
+                    }                        
+                    /*
+                    else if(z == 1)
+                    {
+                        if(Mathf.PerlinNoise(x / 5f, y / 7f) > 0.5f)
+                            voxels[z][y][x].SetBlock(BlockType.Air);
+                        else
+                            voxels[z][y][x].SetBlock(BlockType.Grass);
                     }
+                    */
                 }
             }
         }
