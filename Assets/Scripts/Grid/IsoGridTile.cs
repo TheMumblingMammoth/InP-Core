@@ -68,14 +68,10 @@ public class IsoGridTile : MonoBehaviour
         }
         
         
-        
-        if(!Core.IsOrtho()){
-            transform.position = new Vector3(transform.position.x, transform.position.y);
-        }
-
-        SetWallOrder(-(int)((transform.position.y - pos.z) * 1000 - 1 - pos.z) + pos.x + 1);
+        SetWallOrder(IsoGrid.CalculateOrderOnGrid(transform.position));
         
     }
+
 
 
 
@@ -83,45 +79,80 @@ public class IsoGridTile : MonoBehaviour
     {
         if (blockData == null)
             return;
-        if(IsMouseOver())
-            blockSprite.color = Color.green;
+        if(focus)
+            blockSprite.color = Color.red;
         else
         {
-            blockSprite.color = Color.white;
-            return;
+            if(!IsoGrid.HasClicked() && IsMouseOver())
+                blockSprite.color = Color.green;
+            else
+            {
+                blockSprite.color = Color.white;
+                return;
+            }
         }
+
         if (Input.GetMouseButtonDown(0))
         {
-    
             if(pos.z < World.chunkSize.z - 1)
                 World.GetTBlock(pos).SetBlock(BlockType.Grass);
-            IsoGrid.Upload();
+            IsoGrid.Click();
         }
         if (Input.GetMouseButtonDown(1))
         {
             if(pos.z > 0)
             World.GetBlock(pos).SetBlock(BlockType.Air);
-            IsoGrid.Upload();
+            IsoGrid.Click();
         }
         if (Input.GetMouseButtonDown(2))
         {
             blockData.SetBlock(BlockType.Stuff);
             World.SetBlock(pos, blockData);
-            IsoGrid.Upload();
+            IsoGrid.Click();
         }
         
+        IsoGrid.Upload();
         
     }
 
     bool IsMouseOver()
     {
-        if(HasWall(World.GetTBlock(pos)))
-            return false;
         if(HasNoWall(World.GetBlock(pos)))
             return false;
-        return IsOver(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        
+        if(HasNoWall(World.GetTBlock(pos)) && IsOverTop(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+            return true;
+        
+        bool se = HasNoWall(World.GetSEBlock(pos)), sw = HasNoWall(World.GetSWBlock(pos));
+        if(se && IsOverSE(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+            return true;
+        
+        if(sw && IsOverSW(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+            return true;
+
+        if(sw && se)
+            return IsOverBottom(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        return false;
     }
-    bool IsOver(Vector2 aim) { 
+
+    bool IsOverTop(Vector2 aim)
+    {
+        return IsOverBottom(aim - new Vector2(0, TileSizeY));
+    }
+
+    bool IsOverSE(Vector2 aim)
+    {
+        return aim.x >= transform.position.x && aim.y >= transform.position.y + TileSizeY / 2
+            && aim.x <  transform.position.x + TileSizeX && aim.y <  transform.position.y + 3 / 2 * TileSizeY;
+    }
+
+    bool IsOverSW(Vector2 aim)
+    {
+        return aim.x >= transform.position.x - TileSizeX && aim.y >= transform.position.y + TileSizeY / 2
+            && aim.x <  transform.position.x && aim.y <  transform.position.y + 3 / 2 * TileSizeY;
+    }
+
+    bool IsOverBottom(Vector2 aim) { 
         
         if(!IsInRect(aim))
             return false;
@@ -139,10 +170,10 @@ public class IsoGridTile : MonoBehaviour
             return TileSizeX + dx > -2 * dy;
         return false;
     }
-    bool IsInRect(Vector2 pos)
+    bool IsInRect(Vector2 aim)
     {
-        return pos.x >= transform.position.x - TileSizeX && pos.y >= transform.position.y
-            && pos.x <  transform.position.x + TileSizeX && pos.y <  transform.position.y + TileSizeY;
+        return aim.x >= transform.position.x - TileSizeX && aim.y >= transform.position.y
+            && aim.x <  transform.position.x + TileSizeX && aim.y <  transform.position.y + TileSizeY;
     }    
     static bool HasWall(Block block)
     {
@@ -260,6 +291,28 @@ public class IsoGridTile : MonoBehaviour
              &&HasWall(World.GetSBlock(pos)) && HasWall(World.GetEBlock(pos));
     }
 
-    #endregion Neigh
 
+
+    public float GetLocalZ(float x, float y)
+    {
+        x = transform.position.x - x + TileSizeX;
+        y = transform.position.y - y;
+        switch (GetWallID())
+        {
+            default:
+            case 0: return 0;
+            case 1: return  x + y;
+            case 2: return -x + y;
+            case 3: return  x - y;
+            case 4: return -x - y;
+            ///
+        }
+    }
+
+    #endregion Neigh
+    bool focus;
+    public void SetFocus(bool focus)
+    {
+        this.focus = focus;
+    }
 }

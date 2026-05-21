@@ -8,10 +8,9 @@ public class PlayerControlUnit : NetworkBehaviour
     public static PlayerControlUnit proxy { get; private set; }
     [SerializeField] float speed = 1f; // скорость юнита
     [SerializeField] float size = 3f;
-    Vector2 direction; // вектор направления движения
+    Vector3 direction; // вектор направления движения
     
     [SerializeField] private Vector3Int pos;
-    [SerializeField] public int z = World.chunkSize.z / 2;
     [SerializeField] Body body;
     void Awake()
     {
@@ -22,10 +21,14 @@ public class PlayerControlUnit : NetworkBehaviour
             Debug.Log("Owner spawned");
         }
     }
-
+    void Start()
+    {
+        pos = new Vector3Int(5, 5, World.main.GetHighestBlock(new Vector2Int(5,5))+ 1);
+        transform.position = pos;        
+    }
     void UpdateBodyAnimation()
     {
-        if (direction != Vector2.zero)
+        if (direction != Vector3.zero)
         {
             body.ChangeState(Input.GetKey(KeyCode.LeftShift) ? "Run" : "Walk");
         }
@@ -45,38 +48,36 @@ public class PlayerControlUnit : NetworkBehaviour
 
     void FixedUpdate()
     {
-        Vector2 aim = (Vector2)transform.position + direction;
+        
+        Vector3 aim = transform.position + direction;
         float step = speed * (Input.GetKey(KeyCode.LeftShift) ? 2 : 1) * Time.fixedDeltaTime;
-        Vector2 new_pos = Vector2.MoveTowards(transform.position, aim, step); // поправка скорости с проверкой нажатого шифта и кол-ва фпс
-        Vector2 new_front = Vector2.MoveTowards(new_pos, aim, size/2);
+        Vector3 new_pos = Vector3.MoveTowards(transform.position, aim, step); // поправка скорости с проверкой нажатого шифта и кол-ва фпс
+        Vector3 new_front = Vector3.MoveTowards(new_pos, aim, pos.z);
         
         UpdateBodyAnimation();        
         
-        if (World.GetBlock(new_front, z) != null && World.GetBlock(new_front, z).HasBlock())
+        if (World.GetBlock(new_front, pos.z) != null && World.GetBlock(new_front, pos.z).HasBlock())
         {
-            aim = World.GetClosestToBlock((Vector2)transform.position, new_front);
-            transform.position = Vector2.MoveTowards(aim, transform.position, size/2);
+            aim = World.GetClosestToBlock(transform.position, new_front);
+            transform.position = Vector3.MoveTowards(aim, transform.position, pos.z);
         }
-        else if (World.GetBlock(new_pos, z) != null && World.GetBlock(new_pos, z).HasBlock())
+        else if (World.GetBlock(new_pos, pos.z) != null && World.GetBlock(new_pos, pos.z).HasBlock())
         {
-            aim = World.GetClosestToBlock((Vector2)transform.position, new_pos);
-            transform.position = Vector2.MoveTowards(aim, transform.position, size/2);
+            aim = World.GetClosestToBlock(transform.position, new_pos);
+            transform.position = Vector3.MoveTowards(aim, transform.position, pos.z);
         }
         else
         {
-            transform.position = new_pos;
+            transform.position = new Vector3(new_pos.x, new_pos.y, pos.z);
             //transform.position = Vector2.MoveTowards(transform.position, new_pos, -size);
         }        
 
 
-
         pos = CalcPosition(); //new Vector3Int((int)transform.position.x, (int)transform.position.y, z);
-        IsoGrid.SetFocus((Vector2Int)pos);
         Rebound();
         pos = CalcPosition();//new Vector3Int((int)transform.position.x, (int)transform.position.y, z);
+        IsoGrid.SetFocus(pos - new Vector3Int(0, 0, 1));
         
-        if(!Core.IsOrtho())
-            Persp();
     }
 
     Vector3Int CalcPosition()
@@ -89,43 +90,39 @@ public class PlayerControlUnit : NetworkBehaviour
         float dx = transPos.x - J * IsoGridTile.TileSizeX;
         float dy = transPos.y - I * IsoGridTile.TileSizeY - (J % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - 0.5f;
          
-        if(dx == 0 || dy == 0)
-            return new Vector3Int(J, I, z);
+        //if(dx == 0 || dy == 0)
+            return new Vector3Int(J, I, pos.z);
         if (dx > 0 && dy > 0)
         {
             if(IsoGridTile.TileSizeX - dx > 2 * dy)
-                return IsoGrid.GoNE(new Vector3Int(J, I, z));
+                return IsoGrid.GoNE(new Vector3Int(J, I, pos.z));
             else 
-                new Vector3Int(J, I, z);
+                new Vector3Int(J, I, pos.z);
         }
         if (dx < 0 && dy > 0)
         {
             if (IsoGridTile.TileSizeX + dx > 2 * dy)
-                return IsoGrid.GoNW(new Vector3Int(J, I, z));
+                return IsoGrid.GoNW(new Vector3Int(J, I, pos.z));
             else 
-                new Vector3Int(J, I, z);
+                new Vector3Int(J, I, pos.z);
         }
         if (dx > 0 && dy < 0)
         {
             if (IsoGridTile.TileSizeX - dx > -2 * dy)
-                return IsoGrid.GoSE(new Vector3Int(J, I, z));
+                return IsoGrid.GoSE(new Vector3Int(J, I, pos.z));
             else
-                new Vector3Int(J, I, z);
+                new Vector3Int(J, I, pos.z);
         }
         if (dx < 0 && dy < 0)
         {
             if (IsoGridTile.TileSizeX + dx > -2 * dy)
-                return IsoGrid.GoSE(new Vector3Int(J, I, z));
+                return IsoGrid.GoSW(new Vector3Int(J, I, pos.z));
             else
-                new Vector3Int(J, I, z);
+                new Vector3Int(J, I, pos.z);
         }
-        return new Vector3Int(J, I, z);
+        return new Vector3Int(J, I, pos.z);
     }
 
-    void Persp()
-    {
-        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-    }
     void Rebound()
     {
         float x = transform.position.x - pos.x;
@@ -160,9 +157,9 @@ public class PlayerControlUnit : NetworkBehaviour
             fx += (size - x)/2;
         }
 
-        Vector2 reb = new Vector2(fx, fy);
+        Vector3 reb = new Vector3(fx, fy, transform.position.z);
         float speed = this.speed * (fx * fx + fy * fy) / Mathf.Pow(size, 2);
-        transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + reb*10, speed*Time.fixedDeltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + reb*10, speed*Time.fixedDeltaTime);
     }
     int id = 1;
     void Update()
@@ -184,7 +181,7 @@ public class PlayerControlUnit : NetworkBehaviour
         if (Input.GetKey(KeyCode.S)) y = -100;
         if (Input.GetKey(KeyCode.A)) x = -100;
         if (Input.GetKey(KeyCode.D)) x = 100;
-        return new Vector2(x, y);
+        return new Vector3(x, y, transform.position.z);
     }
 
 

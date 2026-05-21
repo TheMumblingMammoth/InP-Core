@@ -86,6 +86,11 @@ public class World : MonoBehaviour
         return Vector2.Distance(pos, VX) < Vector2.Distance(pos, VY) ? VX : VY;
     }
 
+    public int GetHighestBlock(Vector2Int pos)
+    {
+        return chunks[size.z-1][pos.y / chunkSize.y][pos.x / chunkSize.x].GetHighestBlock(pos.x % chunkSize.x, pos.y % chunkSize.y);
+    }
+
     public static void SetBlock(Vector3Int pos, Block block)
     {
         main.chunks[pos.z / chunkSize.z][pos.y / chunkSize.y][pos.x / chunkSize.x].voxels[pos.z % chunkSize.z][pos.y % chunkSize.y][pos.x % chunkSize.x] = block;

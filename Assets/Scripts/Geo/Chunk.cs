@@ -18,7 +18,7 @@ public class Chunk
                 {
                     voxels[z][y][x] = new Block();
                     
-                    if( (Mathf.PerlinNoise(x / 5f, y / 7f) + Mathf.PerlinNoise(x / 17f, (y + 3) / 13f)) + 1 > z)
+                    if( Mathf.PerlinNoise(x / 5f, y / 7f) + Mathf.PerlinNoise(x / 17f, (y + 3) / 13f) + 1 > z)
                     {
                         voxels[z][y][x].SetBlock(BlockType.Grass);
                     }                    
@@ -38,6 +38,14 @@ public class Chunk
                 }
             }
         }
+    }
+
+    public int GetHighestBlock(int x, int y)
+    {
+        for(int z = 0; z < World.chunkSize.z-1; z++)
+            if(!voxels[z+1][y][x].HasBlock())
+                return z;
+        return World.chunkSize.z-1;
     }
 }
 

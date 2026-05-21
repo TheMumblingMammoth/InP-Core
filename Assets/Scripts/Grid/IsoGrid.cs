@@ -6,7 +6,7 @@ public class IsoGrid : MonoBehaviour
     [SerializeField] Vector2Int size;
     [SerializeField] Vector3Int coords = new Vector3Int(0, 0, 4);
     IsoGridTile [][][] matrix;
-
+    
     void Awake()
     {
         proxy = this;
@@ -39,6 +39,7 @@ public class IsoGrid : MonoBehaviour
         {
             Snap(new Vector3Int((int)Camera.main.transform.position.x, (int)Camera.main.transform.position.y, 4));
         }
+        click = false;
     }
     
     public static void Upload()
@@ -66,7 +67,7 @@ public class IsoGrid : MonoBehaviour
                 {
                     matrix[q][i][j].transform.localPosition = new Vector3( j * IsoGridTile.TileSizeX - size.x / 2,
                                                                         (i+q) * IsoGridTile.TileSizeY - ((coords.x + j) % 2 == 0 ? 0 : IsoGridTile.TileSizeY / 2) - size.y / 2,
-                                                                        0);
+                                                                        q);
                     
                     matrix[q][i][j].Upload(coords.x - size.x / 2 + j, coords.y - size.y / 2 + i, q);
                 }
@@ -75,10 +76,12 @@ public class IsoGrid : MonoBehaviour
     }
 
     #region Focus
-        [SerializeField] GameObject ff;
-        public static void SetFocus(Vector2 pos)
+        static Vector3Int focusPos = Vector3Int.zero;
+        public static void SetFocus(Vector3Int pos)
         {
-            proxy.ff.transform.position = new Vector3(pos.x, pos.y, 0);
+            proxy.matrix[focusPos.z][focusPos.y][focusPos.x].SetFocus(false);
+            focusPos = pos;
+            proxy.matrix[pos.z][pos.y][pos.x].SetFocus(true);
         }
     #endregion
 
@@ -101,4 +104,18 @@ public class IsoGrid : MonoBehaviour
     {
         return new Vector3Int(pos.x - 1, pos.y - (pos.x % 2 == 0 ? 0 : 1), pos.z);
     }
+
+    #region OrderOnGrid
+    public static int CalculateOrderOnGrid(Vector3 position)
+    {
+        return (int)(-(position.y - position.z) * 1000 - 1 + position.z + position.x + 1);
+    }
+    #endregion OrderOnGrid
+
+    #region OrderOnGrid
+    private static bool click;
+    public static bool HasClicked(){ return click; }
+    public static void Click(){ click = true; }
+
+    #endregion OrderOnGrid
 }

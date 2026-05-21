@@ -161,9 +161,9 @@ public class Body : MonoBehaviour
         timer += Time.fixedDeltaTime * Core.TimeScale() * animationSpeed;
         //UpdateDelta();
         ApplyClip();
-        if (order != -(int)((transform.position.y - height) * 1000) + skinID)
+        if (order != IsoGrid.CalculateOrderOnGrid(transform.position + new Vector3(0, -2*height, 0)) + skinID)
         {
-            order = -(int)((transform.position.y - height) * 1000) + skinID;
+            order = IsoGrid.CalculateOrderOnGrid(transform.position + new Vector3(0, -2*height, 0)) + skinID;
             foreach (Limb limb in limbs)
                 limb.SetOrder(order);
             foreach (Equipment eq in equipment)
