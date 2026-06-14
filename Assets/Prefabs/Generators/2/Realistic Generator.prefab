@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7211429411083466053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8855236026724553683}
+  - component: {fileID: 747356184630127982}
+  - component: {fileID: 6619744468031744038}
+  - component: {fileID: 2588464274797523205}
+  m_Layer: 0
+  m_Name: Realistic Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8855236026724553683
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7211429411083466053}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &747356184630127982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7211429411083466053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d6cc22bfe3db4546b7aa47594baca42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
+  drawMode: 2
+  noiseScale: 500
+  octaves: 6
+  persistance: 0.571
+  lacunarity: 2.25
+  seed: 9
+  offset: {x: 382.5, y: 92.44}
+  upperHeight: 0.55
+  autoUpdate: 1
+  regions:
+  - name: Water deep
+    height: -0.4
+    colour: {r: 0.18316126, g: 0.35734504, b: 0.6603774, a: 1}
+  - name: Water 2
+    height: 0
+    colour: {r: 0.29918826, g: 0.4400642, b: 0.78113204, a: 1}
+  - name: Sand
+    height: 0.25
+    colour: {r: 0.8157924, g: 0.81886786, b: 0.49286574, a: 1}
+  - name: Grass
+    height: 0.73
+    colour: {r: 0.508981, g: 0.7433963, b: 0.4754931, a: 1}
+  - name: Dark grass
+    height: 1.08
+    colour: {r: 0.45932198, g: 0.6150943, b: 0.43985048, a: 1}
+  - name: Rock
+    height: 1.4
+    colour: {r: 0.4490565, g: 0.39326662, b: 0.35839793, a: 1}
+  - name: Dark rock
+    height: 2.05
+    colour: {r: 0.2754717, g: 0.2527756, b: 0.20738341, a: 1}
+  - name: Snow
+    height: 59.91
+    colour: {r: 0.8132075, g: 0.91105115, b: 1, a: 1}
+--- !u!114 &6619744468031744038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7211429411083466053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9518651bfca8574448c79daa14cd560b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapDisplay
+  textureRenderer: {fileID: 0}
+  meshFilter: {fileID: 0}
+  meshRenderer: {fileID: 0}
+--- !u!114 &2588464274797523205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7211429411083466053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7066f357b3366e3469ba19d5589e092f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndlessTerain
+  viewer: {fileID: 0}
+  mapMaterial: {fileID: 2100000, guid: 32bc9aaa921c7f54d88ac409e60bcf9c, type: 2}
