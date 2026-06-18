@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: a456a93d1f6b14598903f073f206d693
+labels:
+- Pool
+- Pooling
+- Object
+timeCreated: 1425713041
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 31928
+  packageName: Easy Object Pool
+  packageVersion: 1.0
+  assetPath: Assets/EasyObjectPool/EasyObjectPool-Documentation.pdf
+  uploadId: 53680

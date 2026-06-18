@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6013727178277333153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5259489532630946336}
+  - component: {fileID: 6285986794335401417}
+  m_Layer: 0
+  m_Name: Nature Pool max 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5259489532630946336
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013727178277333153}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.50916, y: 7.25979, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6285986794335401417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6013727178277333153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd53aa52f082d402bbb1db7e3b67072a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MarchingBytes.EasyObjectPool
+  poolInfo:
+  - poolName: tree 0
+    prefab: {fileID: 9200456128278551638, guid: 798ef95130c529d4099e438f25798fe1, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 1
+    prefab: {fileID: 4831785606635963607, guid: 6be8c47f34ab97e4687e8920e27b5524, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 2
+    prefab: {fileID: 7793990447470429197, guid: f3f0cda5775ecd74daf2940603d80fd4, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 3
+    prefab: {fileID: 8807077778776493256, guid: cd34f36e623857244bee280ed5656de2, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 4
+    prefab: {fileID: 5770768862668680068, guid: 1b09952209162b64d9078f533a1fd409, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 5
+    prefab: {fileID: 8955448798296709554, guid: a282e7d3bb93e8748945f74042c9917a, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 6
+    prefab: {fileID: 5031286918538961950, guid: d86423bd1026e2948a5a8135e1d698d9, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 7
+    prefab: {fileID: 4951255140922789470, guid: a07dfd115758c9f47812fb013729b299, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 8
+    prefab: {fileID: 6072951948929569137, guid: 3e9e49e0b143b5148b4681833f20c58c, type: 3}
+    poolSize: 505
+    fixedSize: 0
+  - poolName: tree 9
+    prefab: {fileID: 1524444421259129160, guid: 451a66178efd99a40adf6ae68b0ef9f3, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 10
+    prefab: {fileID: 269825525640403308, guid: cb0665788ff101d43a70390ea9077de1, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 11
+    prefab: {fileID: 3194024450522519306, guid: 7fdd94c8d6f13134ebf4bcb8d6af8c92, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 12
+    prefab: {fileID: 3509498091165063686, guid: c0df5c8c5fd2de441ae93629c804c5d0, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 13
+    prefab: {fileID: 8297471304075403925, guid: fe7fda7ecaed98e46a5ffc8b7deb7ee2, type: 3}
+    poolSize: 50
+    fixedSize: 0
+  - poolName: tree 14
+    prefab: {fileID: 7128797805141513339, guid: e391c4da129158e429c43db9bc7ca4b1, type: 3}
+    poolSize: 50
+    fixedSize: 0

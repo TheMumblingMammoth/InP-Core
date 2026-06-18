@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b64e1df0f3af84bb5ab3474165b11863
+timeCreated: 1425712620
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 31928
+  packageName: Easy Object Pool
+  packageVersion: 1.0
+  assetPath: Assets/EasyObjectPool/Example/SampleMaterial3.mat
+  uploadId: 53680
