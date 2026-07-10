@@ -3,10 +3,14 @@ using UnityEngine;
 public class Chunk 
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
+    Vector3Int coords;
     public Block [][][] voxels {get; private set;}
-    public Chunk()
+
+    public Chunk(Vector3Int coords)
     {
+        this.coords = coords;
+        float[,] noiseMap = World.main.HighGenerator.GetNoiseMap(coords);
+
         voxels = new Block[World.chunkSize.z][][];
         for(int z = 0; z < World.chunkSize.z; z++)
         {
@@ -16,23 +20,33 @@ public class Chunk
                 voxels[z][y] = new Block[World.chunkSize.x];
                 for(int x = 0; x < World.chunkSize.x; x++)
                 {
-                    voxels[z][y][x] = new Block();
-                    
-                    if( Mathf.PerlinNoise(x / 5f, y / 7f) + Mathf.PerlinNoise(x / 17f, (y + 3) / 13f) + 1 > z)
-                    {
-                        voxels[z][y][x].SetBlock(BlockType.Grass);
-                    }                    
+                    voxels[z][y][x] = new Block();  
+                    if(z == 0){
+                        voxels[z][y][x].SetBlock(BlockType.Dirt);
+                        voxels[z][y][x].SetCarpet(CarpetType.Grass);
+                    }
                     else
                     {
                         voxels[z][y][x].SetBlock(BlockType.Air);
-                    }                        
+                    }
                     /*
-                    else if(z == 1)
+                    
+                    float high = noiseMap[x, y]*World.chunkSize.z + 1;
+                    if(high > z)
                     {
-                        if(Mathf.PerlinNoise(x / 5f, y / 7f) > 0.5f)
-                            voxels[z][y][x].SetBlock(BlockType.Air);
-                        else
-                            voxels[z][y][x].SetBlock(BlockType.Grass);
+                        voxels[z][y][x].SetBlock(BlockType.Dirt);
+                        if(high < z + 0.5)
+                            voxels[z][y][x].SetCarpet(CarpetType.Grass);
+                    }                     
+                    else if(high + 0.5 > z)
+                    {
+                        voxels[z][y][x].SetBlock(BlockType.Dirt);
+                        voxels[z][y][x].SetHalf();
+                        voxels[z][y][x].SetCarpet(CarpetType.Grass);
+                    }                     
+                    else
+                    {
+                        voxels[z][y][x].SetBlock(BlockType.Air);
                     }
                     */
                 }

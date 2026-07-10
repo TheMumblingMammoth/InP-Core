@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-
 public static class Noise
 {
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset, float upperHeight)
@@ -26,9 +24,9 @@ public static class Noise
         float halfWidth = mapWidth / 2f;
         float halfHeight = mapHeight / 2f;
 
-        for (int y = 0; y<mapHeight; y++)
+        for (int y = 0; y < mapHeight; y++)
         {
-            for (int x = 0; x<mapWidth; x++)
+            for (int x = 0; x < mapWidth; x++)
             {
                 float amplitude = 1;
                 float frequency = 1;
@@ -36,7 +34,7 @@ public static class Noise
 
                 for (int i = 0; i < octaves; i++)
                 {
-                    float sampleX = (x - halfHeight + octaveOffsets[i].x) / scale * frequency ; // x-halfHeight - для масштабирования относительно центра текстуры
+                    float sampleX = (x - halfHeight + octaveOffsets[i].x) / scale * frequency ; // x-halfHeight - пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     float sampleY = (y - halfWidth - octaveOffsets[i].y) / scale * frequency;
 
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
@@ -64,7 +62,7 @@ public static class Noise
                 noiseMap[x, y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, noiseMap[x, y]);
             }
         }
-        */ // Нормализация (либо не раскоменчивать, либо переделать по туториалу, т.к. сейчас она создает резкие переходы между чанками
+        */ // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ.пїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         
         return noiseMap;
     }

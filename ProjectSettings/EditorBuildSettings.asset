@@ -12,10 +12,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Test/MultiplayerTest.unity
     guid: 7b24c5d1d1c96bb47b20f7f6f83c3939
   - enabled: 1
-    path: Assets/Scenes/Test/GridTest.unity
+    path: Assets/Scenes/Test/Additonal/GridTest.unity
     guid: d5a3da8cba25422439bced8ba3b1d547
   - enabled: 1
-    path: Assets/Scenes/Test/PerspMultiplayerTest.unity
+    path: Assets/Scenes/Test/Additonal/Perspective/PerspMultiplayerTest.unity
     guid: c4fceb69e710c7943a2d82a44bbe0c16
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

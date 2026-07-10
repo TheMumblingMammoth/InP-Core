@@ -5,9 +5,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 public class IsoGridTile : MonoBehaviour
 {
-    public const float TileSizeX = 31/32f, TileSizeY = 1;
+    public const float TileSizeX = 29/32f, TileSizeY = 30/32f;
+    
     [SerializeField] SpriteRenderer tile, frame;
-    [SerializeField] SpriteRenderer blockSprite;
+    [SerializeField] SpriteRenderer blockSprite, carpetSprite;
     [SerializeField] private Vector3Int pos;
     Block blockData;
     
@@ -43,14 +44,15 @@ public class IsoGridTile : MonoBehaviour
         if (blockData == null)
         {
             SetWallSprite(null);
+            SetCarpetSprite(null);
             return;
         }
         
-
         
         if (blockData.GetBlock() == BlockType.Void || blockData.GetBlock() == BlockType.Air)
         {
             SetWallSprite(null);
+            SetCarpetSprite(null);
         }
         else
         {
@@ -59,12 +61,20 @@ public class IsoGridTile : MonoBehaviour
             {
                 Debug.Log("ss;");
                 SetWallSprite(BuilderTool.proxy.STUFF.frames[(pos.x * 5 + pos.y * 7) % 16]);
+                SetCarpetSprite(null);
             }
             else
-            if(blockData.GetBlock() == BlockType.Dirt || blockData.GetBlock() == BlockType.Grass)
-                SetWallSprite(BuilderTool.proxy.walls.ClipFor(wall_name).frames[GetWallID()]);
-            else
-                SetWallSprite(BuilderTool.proxy.walls.ClipFor(wall_name).frames[0]);
+                if(blockData.GetBlock() == BlockType.Dirt || blockData.GetBlock() == BlockType.Grass)
+                    SetWallSprite(BuilderTool.proxy.walls.ClipFor(wall_name).frames[GetWallID()]);
+                else
+                    SetWallSprite(BuilderTool.proxy.walls.ClipFor(wall_name).frames[0]);
+                if(blockData.HasCarpet())
+                {
+                    SetCarpetSprite(BuilderTool.proxy.carpets.ClipFor(blockData.GetCarpet().ToString()).frames[0]);
+                    carpetSprite.transform.localPosition = new Vector2(0, (blockData.full ? 21f : 6) / Core.PPU);                    
+                }
+                else
+                    SetCarpetSprite(null);
         }
         
         
@@ -84,24 +94,30 @@ public class IsoGridTile : MonoBehaviour
         else
         {
             if(!IsoGrid.HasClicked() && IsMouseOver())
-                blockSprite.color = Color.green;
+            {
+                blockSprite.color = Color.red;
+                carpetSprite.color = Color.red;
+            }
             else
             {
                 blockSprite.color = Color.white;
+                carpetSprite.color = new Color(0.5f + pos.x/5f, 0.5f, 0.5f + pos.y/5f);
                 return;
             }
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            if(pos.z < World.chunkSize.z - 1)
-                World.GetTBlock(pos).SetBlock(BlockType.Grass);
+            if(pos.z < World.chunkSize.z - 1){
+                World.GetTBlock(pos).SetBlock(BlockType.Dirt);
+                World.GetTBlock(pos).SetCarpet(CarpetType.Grass);
+            }
             IsoGrid.Click();
         }
         if (Input.GetMouseButtonDown(1))
         {
-            if(pos.z > 0)
-            World.GetBlock(pos).SetBlock(BlockType.Air);
+            //if(pos.z > 0)
+            World.GetBlock(pos).SetEmpty();
             IsoGrid.Click();
         }
         if (Input.GetMouseButtonDown(2))
@@ -114,11 +130,17 @@ public class IsoGridTile : MonoBehaviour
         IsoGrid.Upload();
         
     }
+    
 
     bool IsMouseOver()
     {
         if(HasNoWall(World.GetBlock(pos)))
             return false;
+            
+        
+        Vector2 iso = IsoGrid.GetAim();
+//  
+        return pos.x == (int)(iso.x / TileSizeX) &&  pos.y == (int)(iso.y / TileSizeY);
         
         if(HasNoWall(World.GetTBlock(pos)) && IsOverTop(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
             return true;
@@ -195,14 +217,29 @@ public class IsoGridTile : MonoBehaviour
     {
         blockSprite.sprite = sprite;
     }
+    void SetCarpetSprite(Sprite sprite)
+    {
+        carpetSprite.sprite = sprite;
+    }
 
     void SetWallOrder(int sortingOrder)
     {
         blockSprite.sortingOrder = sortingOrder;    
+        carpetSprite.sortingOrder = sortingOrder+1;    
     }
     
+    private int GetWallID(){ return blockData.full ? 0 : 1; }
         
     #endregion
+
+    bool focus;
+    public void SetFocus(bool focus)
+    {
+        this.focus = focus;
+    }
+}
+
+/*
 
     #region Neigh
     private int GetWallID()
@@ -248,14 +285,14 @@ public class IsoGridTile : MonoBehaviour
         || (HasWall(World.GetSWBlock(pos)) && HasWall(World.GetSEBlock(pos)) && HasWall(World.GetNWBlock(pos)) && HasWall(World.GetNEBlock(pos))))
             return 4;
 
-            /*if(FullIsoNeighs(pos) || EmptyIsoNeighs(pos) ||
-           (HasWall(World.GetNEBlock(pos)) && HasWall(World.GetSWBlock(pos))
-            && HasNoWall(World.GetSEBlock(pos)) && HasNoWall(World.GetNWBlock(pos))
-           )||
-           (HasWall(World.GetNWBlock(pos)) && HasWall(World.GetSEBlock(pos))
-            && HasNoWall(World.GetSWBlock(pos)) && HasNoWall(World.GetNEBlock(pos))
-           ))
-            return 0;*/
+            //if(FullIsoNeighs(pos) || EmptyIsoNeighs(pos) ||
+           //(HasWall(World.GetNEBlock(pos)) && HasWall(World.GetSWBlock(pos))
+            //&& HasNoWall(World.GetSEBlock(pos)) && HasNoWall(World.GetNWBlock(pos))
+           //)||
+           //(HasWall(World.GetNWBlock(pos)) && HasWall(World.GetSEBlock(pos))
+            //&& HasNoWall(World.GetSWBlock(pos)) && HasNoWall(World.GetNEBlock(pos))
+           //))
+            //return 0;
 
         return 0;
     }
@@ -310,9 +347,5 @@ public class IsoGridTile : MonoBehaviour
     }
 
     #endregion Neigh
-    bool focus;
-    public void SetFocus(bool focus)
-    {
-        this.focus = focus;
-    }
-}
+    */
+   

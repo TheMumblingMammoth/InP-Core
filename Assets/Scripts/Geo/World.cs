@@ -1,6 +1,4 @@
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class World : MonoBehaviour
 {
@@ -8,6 +6,11 @@ public class World : MonoBehaviour
     public static World main { get; private set; }
     public static Vector3Int size = new Vector3Int(5, 5, 1);
     public Chunk[][][] chunks { get; private set; }
+
+    [Header("Generators")]
+    [SerializeField] private int seed = 0; public static int GetSeed(){ return main.seed; }
+    public Generator TempGenerator, WetGenerator, HighGenerator;
+
     public void Gen()
     {
         chunks = new Chunk[size.z][][];
@@ -19,13 +22,13 @@ public class World : MonoBehaviour
                 chunks[z][y] = new Chunk[size.x];
                 for (int x = 0; x < size.x; x++)
                 {
-                    chunks[z][y][x] = new Chunk();
+                    chunks[z][y][x] = new Chunk(new Vector3Int(x, y, z));
                 }
             }
         }
-
-        
     }
+
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()

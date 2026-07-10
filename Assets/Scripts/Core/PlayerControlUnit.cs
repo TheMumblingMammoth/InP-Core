@@ -76,7 +76,7 @@ public class PlayerControlUnit : NetworkBehaviour
         pos = CalcPosition(); //new Vector3Int((int)transform.position.x, (int)transform.position.y, z);
         Rebound();
         pos = CalcPosition();//new Vector3Int((int)transform.position.x, (int)transform.position.y, z);
-        IsoGrid.SetFocus(pos - new Vector3Int(0, 0, 1));
+        //IsoGrid.SetFocus(pos - new Vector3Int(0, 0, 1));
         
     }
 
