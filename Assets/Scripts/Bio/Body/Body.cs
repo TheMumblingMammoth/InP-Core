@@ -144,6 +144,7 @@ public class Body : MonoBehaviour
         transform.localPosition = new Vector3(0, height, 0);
         ChangeState(state);
         SetSkin(skinID);
+        SetOrder(order);
         tremblePosition = new Vector2[limbs.Length];
     }
     int order = 0;
@@ -161,14 +162,20 @@ public class Body : MonoBehaviour
         timer += Time.fixedDeltaTime * Core.TimeScale() * animationSpeed;
         //UpdateDelta();
         ApplyClip();
-        if (order != IsoGrid.CalculateOrderOnGrid(transform.position + new Vector3(0, -2*height, 0)) + skinID)
-        {
-            order = IsoGrid.CalculateOrderOnGrid(transform.position + new Vector3(0, -2*height, 0)) + skinID;
-            foreach (Limb limb in limbs)
-                limb.SetOrder(order);
-            foreach (Equipment eq in equipment)
-                eq.SetOrder(order);
-        }
+        //if (order != IsoGrid.CalculateOrderOnGrid(transform.position + new Vector3(0, -2*height, -0.1f)) + skinID)
+        //{ // + new Vector3(0, -2*height, 0)
+            //SetOrder(IsoGrid.CalculateOrderOnGrid(transform.position + new Vector3(0, -2*height, -0.1f)) + skinID);
+            
+        //}
+    }
+
+    public void SetOrder(int order)
+    {
+        this.order = order;
+        foreach (Limb limb in limbs)
+            limb.SetOrder(order);
+        foreach (Equipment eq in equipment)
+            eq.SetOrder(order);
     }
 
 
@@ -190,7 +197,7 @@ public class Body : MonoBehaviour
     #region State
     [SerializeField] bool male;
     [SerializeField] int size;
-    [SerializeField] float height;
+    [SerializeField] float height; public float GetHeight(){return height; }
 
     private int SkinID() { return 1; }
 

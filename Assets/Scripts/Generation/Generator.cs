@@ -11,10 +11,11 @@ public class Generator : MonoBehaviour {
 
     public float[,] GetNoiseMap()
     {
+        
         return Noise.GenerateNoiseMap(World.chunkSize.x * World.size.x, World.chunkSize.y * World.size.y, seed, noiseScale, octaves, persistance, lacunarity, new Vector2(0, 0), upperHeight);
     }
-    public float[,] GetNoiseMap(Vector3Int coords)
+    public float[,] GetNoiseMap(Vector2 coords)
     {
-        return Noise.GenerateNoiseMap(World.chunkSize.x, World.chunkSize.y, seed, noiseScale, octaves, persistance, lacunarity, new Vector2(coords.x, coords.y), upperHeight);
+        return Noise.GenerateNoiseMap(World.chunkSize.x, World.chunkSize.y, seed, noiseScale, octaves, persistance, lacunarity, new Vector2(coords.x * World.chunkSize.x, -coords.y * World.chunkSize.y), upperHeight);
     }
 }

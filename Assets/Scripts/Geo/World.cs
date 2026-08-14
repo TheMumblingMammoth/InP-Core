@@ -5,6 +5,7 @@ public class World : MonoBehaviour
     public static Vector3Int chunkSize = new Vector3Int(64, 64, 8);
     public static World main { get; private set; }
     public static Vector3Int size = new Vector3Int(5, 5, 1);
+    [SerializeField] bool flat; public static bool IsFlat(){ return main.flat; }
     public Chunk[][][] chunks { get; private set; }
 
     [Header("Generators")]
@@ -17,7 +18,7 @@ public class World : MonoBehaviour
         for (int z = 0; z < size.z; z++)
         {
             chunks[z] = new Chunk[size.y][];
-            for (int y = 0; y < size.x; y++)
+            for (int y = 0; y < size.y; y++)
             {
                 chunks[z][y] = new Chunk[size.x];
                 for (int x = 0; x < size.x; x++)
@@ -52,13 +53,30 @@ public class World : MonoBehaviour
     {
         return new Vector3Int(pos.x % chunkSize.x, pos.y % chunkSize.y, pos.z % chunkSize.z);
     }
-    public static Block GetBlock(Vector3 pos)
+
+    public static float GetBlockZ(Vector2 pos)
     {
-        return GetBlock(new Vector3Int((int)pos.x, (int)pos.y, (int)pos.z));
+        return GetBlockZ((Vector2Int)IsoGrid.LinToIso(pos));
     }
+
+    public static float GetBlockZ(Vector2Int pos)
+    {
+        if(pos.x < 0 || pos.x >= size.x * chunkSize.x
+        || pos.y < 0 || pos.y >= size.y * chunkSize.y)
+            return -1;
+        //pos.x % chunkSize.x, pos.y % chunkSize.y, pos.z % chunkSize.z
+        for(int floor = 0; floor < size.z; floor++){
+            float q = floor * chunkSize.z + main.chunks[floor][pos.y / chunkSize.y][pos.x / chunkSize.x].GetBlockZ(pos.x % chunkSize.x, pos.y % chunkSize.y);
+            if (q < (floor + 1) * chunkSize.z - 1)
+                return floor * chunkSize.z + q;
+        }
+        return 0;
+    }
+
     public static Block GetBlock(Vector2 pos, int z)
     {
-        return GetBlock(new Vector3Int((int)pos.x, (int)pos.y, z));
+        Vector3Int coords = IsoGrid.LinToIso(pos);
+        return GetBlock(new Vector3Int(coords.x, coords.y, z));
     }
     public static Block GetBlock(Vector3Int pos)
     {
@@ -102,15 +120,29 @@ public class World : MonoBehaviour
     #region DirGetBlock
         public static Block GetNBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x, pos.y + 1, pos.z)); }
         public static Block GetSBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x, pos.y - 1, pos.z)); }
-        public static Block GetWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 2, pos.y, pos.z)); }
-        public static Block GetEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 2, pos.y, pos.z)); }
-        public static Block GetNEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 1, pos.y + (pos.x % 2 == 0 ? 1 : 0), pos.z)); }
-        public static Block GetNWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 1, pos.y + (pos.x % 2 == 0 ? 1 : 0), pos.z)); }
-        public static Block GetSEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 1, pos.y - (pos.x % 2 == 0 ? 0 : 1), pos.z)); }
-        public static Block GetSWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 1, pos.y - (pos.x % 2 == 0 ? 0 : 1), pos.z)); }
+        public static Block GetWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 2, pos.y - 1, pos.z)); }
+        public static Block GetEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 2, pos.y + 1, pos.z)); }
+        public static Block GetNEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 1, pos.y + 1, pos.z)); }
+        public static Block GetNWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 1, pos.y, pos.z)); }
+        public static Block GetSEBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x + 1, pos.y, pos.z)); }
+        public static Block GetSWBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x - 1, pos.y - 1, pos.z)); }
         public static Block GetTBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x, pos.y, pos.z + 1)); }
         public static Block GetBBlock(Vector3Int pos) { return GetBlock(new Vector3Int(pos.x, pos.y, pos.z - 1)); }
     #endregion
 
+    #region Generator
+
+    public static float GetTemp(Vector3Int pos)
+    {
+        return main.chunks[pos.z / chunkSize.z][pos.y / chunkSize.y][pos.x / chunkSize.x].tempMap[pos.x % chunkSize.x, pos.y % chunkSize.y];
+    }
+
+    public static float GetWet(Vector3Int pos)
+    {
+        return main.chunks[pos.z / chunkSize.z][pos.y / chunkSize.y][pos.x / chunkSize.x].wetMap[pos.x % chunkSize.x, pos.y % chunkSize.y];
+    }
+
+
+    #endregion Generator
 
 }

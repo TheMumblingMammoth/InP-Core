@@ -2,7 +2,8 @@ using UnityEngine;
 public enum BlockType
 {
     Void = -1, Air = 0, Dirt = 1, Grass = 2,
-    WoodLog = 11, Fachwerk = 12, Stuff = 13
+    DirtRock = 21,
+    DirtBrick= 11, Fachwerk = 12, Stuff = 13
 }
 
 public enum CarpetType
@@ -25,8 +26,29 @@ public class Block
     public bool HasCarpet(){  return carpet != CarpetType.None; }
 
     public void SetEmpty(){ block = BlockType.Air; carpet = CarpetType.None; }
+    public bool IsEmpty(){ return block == BlockType.Air && carpet == CarpetType.None; }
 
     public bool full { get; private set;} = true; 
     public void SetHalf(){ full = false;}
     public void SetFull(){ full = true;}
+
+    #region Is?
+        
+        public bool IsHalfable()
+        {
+            return block == BlockType.Dirt || block == BlockType.DirtRock || block == BlockType.DirtBrick;
+        }
+
+        public bool IsCarpetWetable()
+        {
+            return carpet == CarpetType.Grass || carpet == CarpetType.DryGrass;
+        }
+
+        public bool IsBlockWetable()
+        {
+            return false;
+        }
+    #endregion Wetable
+
 }
+

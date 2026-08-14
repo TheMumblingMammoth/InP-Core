@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d467791fead48144abd0adc7118e5189
+guid: 07305682437a21a4e8022e491f75a68c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 708099382379513963
-    second: DryGrass1_0
+      213: -6343161192445726972
+    second: DirtBrick2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DryGrass1_0
+      name: DirtBrick2_0
       rect:
         serializedVersion: 2
-        x: 6
+        x: 0
         y: 0
-        width: 68
-        height: 41
+        width: 64
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b688768f2aca3d900800000000000000
-      internalID: 708099382379513963
+      spriteID: 40faa33c08098f7a0800000000000000
+      internalID: -6343161192445726972
       vertices: []
       indices: 
       edges: []

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MiniMap : MonoBehaviour
 {
@@ -17,19 +18,23 @@ public class MiniMap : MonoBehaviour
         
         Vector2Int size = new Vector2Int(World.size.x * World.chunkSize.x, World.size.y * World.chunkSize.y);
         Texture2D texture = new Texture2D(size.x, size.y, TextureFormat.ARGB32, false);
-        float [,] noizeMap;
-        switch (miniMapType)
-        {
-            default:
-            case MiniMapType.High: noizeMap = world.HighGenerator.GetNoiseMap(); break;
-            case MiniMapType.Temp: noizeMap = world.TempGenerator.GetNoiseMap(); break;
-            case MiniMapType.Wet: noizeMap = world.WetGenerator.GetNoiseMap(); break;   
-        } 
+        for(int Y = 0; Y < World.size.y; Y++){
+            for(int X = 0; X < World.size.x; X++){
+                float [,] noizeMap;
+                switch (miniMapType)
+                {
+                    default:
+                    case MiniMapType.High: noizeMap = world.HighGenerator.GetNoiseMap(new Vector2(X, Y)); break;
+                    case MiniMapType.Temp: noizeMap = world.TempGenerator.GetNoiseMap(new Vector2(X, Y)); break;
+                    case MiniMapType.Wet: noizeMap = world.WetGenerator.GetNoiseMap(new Vector2(X, Y)); break;   
+                } 
 
-        for(int i = 0; i < size.y; i++){
-            for(int j = 0; j < size.x; j++)
-            {
-                texture.SetPixel(j, i, GetColor(noizeMap[j, i]));
+                for(int i = 0; i < World.chunkSize.y; i++){
+                    for(int j = 0; j < World.chunkSize.x; j++)
+                    {
+                        texture.SetPixel(X * World.chunkSize.x + j, Y * World.chunkSize.y + i, GetColor(noizeMap[j, i]));
+                    }
+                }
             }
         }
         texture.Apply();

@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using NUnit.Framework;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 public class IsoGridTile : MonoBehaviour
@@ -35,7 +36,6 @@ public class IsoGridTile : MonoBehaviour
     {
         pos = new Vector3Int(x, y, z);
         Upload();
-
     }
     
     void Upload()
@@ -48,37 +48,35 @@ public class IsoGridTile : MonoBehaviour
             return;
         }
         
-        
         if (blockData.GetBlock() == BlockType.Void || blockData.GetBlock() == BlockType.Air)
         {
             SetWallSprite(null);
             SetCarpetSprite(null);
+            return;
+        }
+        ResetColor();
+        
+        string block_name = blockData.GetBlock().ToString();
+        if(blockData.GetBlock() == BlockType.Stuff)
+        {
+            Debug.Log("ss;");
+            SetWallSprite(BuilderTool.proxy.STUFF.frames[(pos.x * 5 + pos.y * 7) % 16]);
+            SetCarpetSprite(null);
         }
         else
-        {
-            string wall_name = blockData.GetBlock().ToString();
-            if(blockData.GetBlock() == BlockType.Stuff)
+            if(blockData.IsHalfable())
+                SetWallSprite(BuilderTool.proxy.blocks.ClipFor(block_name).frames[GetBlockID()]);
+            else
+                SetWallSprite(BuilderTool.proxy.blocks.ClipFor(block_name).frames[0]);
+            if(blockData.HasCarpet())
             {
-                Debug.Log("ss;");
-                SetWallSprite(BuilderTool.proxy.STUFF.frames[(pos.x * 5 + pos.y * 7) % 16]);
-                SetCarpetSprite(null);
+                SetCarpetSprite(BuilderTool.proxy.carpets.ClipFor(blockData.GetCarpet().ToString()).frames[0]);
+                carpetSprite.transform.localPosition = new Vector2(0, (blockData.full ? 21f : 6) / Core.PPU);                    
             }
             else
-                if(blockData.GetBlock() == BlockType.Dirt || blockData.GetBlock() == BlockType.Grass)
-                    SetWallSprite(BuilderTool.proxy.walls.ClipFor(wall_name).frames[GetWallID()]);
-                else
-                    SetWallSprite(BuilderTool.proxy.walls.ClipFor(wall_name).frames[0]);
-                if(blockData.HasCarpet())
-                {
-                    SetCarpetSprite(BuilderTool.proxy.carpets.ClipFor(blockData.GetCarpet().ToString()).frames[0]);
-                    carpetSprite.transform.localPosition = new Vector2(0, (blockData.full ? 21f : 6) / Core.PPU);                    
-                }
-                else
-                    SetCarpetSprite(null);
-        }
+                SetCarpetSprite(null);        
         
-        
-        SetWallOrder(IsoGrid.CalculateOrderOnGrid(transform.position));
+        SetTileOrder(IsoGrid.CalculateOrderOnGrid(transform.position));
         
     }
 
@@ -89,46 +87,39 @@ public class IsoGridTile : MonoBehaviour
     {
         if (blockData == null)
             return;
-        if(focus)
-            blockSprite.color = Color.red;
-        else
-        {
-            if(!IsoGrid.HasClicked() && IsMouseOver())
-            {
-                blockSprite.color = Color.red;
-                carpetSprite.color = Color.red;
-            }
-            else
-            {
-                blockSprite.color = Color.white;
-                carpetSprite.color = new Color(0.5f + pos.x/5f, 0.5f, 0.5f + pos.y/5f);
-                return;
-            }
-        }
-
+        
+        if(!focus || IsoGrid.HasClicked())
+            return;
+        return;
         if (Input.GetMouseButtonDown(0))
         {
-            if(pos.z < World.chunkSize.z - 1){
+            if (!blockData.full)
+            {
+                World.GetBlock(pos).SetFull();
+            }else if(pos.z < World.chunkSize.z - 1){
                 World.GetTBlock(pos).SetBlock(BlockType.Dirt);
                 World.GetTBlock(pos).SetCarpet(CarpetType.Grass);
+                World.GetTBlock(pos).SetHalf();
             }
             IsoGrid.Click();
         }
         if (Input.GetMouseButtonDown(1))
         {
-            //if(pos.z > 0)
-            World.GetBlock(pos).SetEmpty();
+            if (blockData.full)
+            {
+                World.GetBlock(pos).SetHalf();
+            }
+            else
+            {
+                World.GetBlock(pos).SetEmpty();
+            }   
             IsoGrid.Click();
         }
         if (Input.GetMouseButtonDown(2))
         {
-            blockData.SetBlock(BlockType.Stuff);
-            World.SetBlock(pos, blockData);
+            World.GetTBlock(pos).SetBlock(BlockType.Stuff);
             IsoGrid.Click();
-        }
-        
-        IsoGrid.Upload();
-        
+        }        
     }
     
 
@@ -196,7 +187,7 @@ public class IsoGridTile : MonoBehaviour
     {
         return aim.x >= transform.position.x - TileSizeX && aim.y >= transform.position.y
             && aim.x <  transform.position.x + TileSizeX && aim.y <  transform.position.y + TileSizeY;
-    }    
+    }
     static bool HasWall(Block block)
     {
         if(block == null)
@@ -212,6 +203,39 @@ public class IsoGridTile : MonoBehaviour
 
 
     #region Wall
+    public bool IsEmpty(){ return blockData == null || blockData.IsEmpty(); }
+    public bool IsTransparent(){ return IsEmpty(); }
+    
+    public void ResetColor()
+    {
+        if (blockData == null)
+            return;
+        
+        float a = 0.5f + 0.5f * (pos.z + (blockData.full ? 0.5f : 0))/World.chunkSize.z;
+        float br = a, bg = a, bb = a, ba = 1f;
+        float cr = a, cg = a, cb = a, ca = 1f;
+        float dry = World.GetTemp(pos) + World.GetWet(pos);
+        // - dry * (blockData.IsBlockWetable() ? 1 : 0)
+        if (blockData.IsBlockWetable())
+        {
+            br += dry*0.6f;
+            bb -= dry*0.6f;
+        }
+        if (blockData.IsCarpetWetable())
+        {
+            if(dry > 1f) dry -= 1f; 
+            cr += dry*0.6f;
+            cb -= dry*0.6f;
+        }
+        blockSprite.color = new Color(br, bg, bb, ba);
+        carpetSprite.color = new Color(cr, cg, cb, ca);
+    }
+
+    public void SetColor(Color color)
+    {
+        blockSprite.color = color;
+        carpetSprite.color = color;
+    }
 
     void SetWallSprite(Sprite sprite)
     {
@@ -222,17 +246,17 @@ public class IsoGridTile : MonoBehaviour
         carpetSprite.sprite = sprite;
     }
 
-    void SetWallOrder(int sortingOrder)
+    void SetTileOrder(int sortingOrder)
     {
         blockSprite.sortingOrder = sortingOrder;    
         carpetSprite.sortingOrder = sortingOrder+1;    
     }
     
-    private int GetWallID(){ return blockData.full ? 0 : 1; }
+    private int GetBlockID(){ return blockData.full ? 0 : 1; }
         
     #endregion
 
-    bool focus;
+    bool  focus;
     public void SetFocus(bool focus)
     {
         this.focus = focus;

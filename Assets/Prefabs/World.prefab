@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seed: 0
-  noiseScale: 500
-  octaves: 11
+  noiseScale: 200
+  octaves: 9
   persistance: 0.2
-  lacunarity: 2
+  lacunarity: 5
   upperHeight: 0.1
 --- !u!1 &1573600657369773860
 GameObject:
@@ -99,7 +99,7 @@ MonoBehaviour:
   octaves: 11
   persistance: 0.2
   lacunarity: 2
-  upperHeight: 0.1
+  upperHeight: 0.5
 --- !u!1 &3956355175276580253
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073c3e1ca39bb474eb875bd883084455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flat: 0
   seed: 0
   TempGenerator: {fileID: 5318490212282920225}
   WetGenerator: {fileID: 5615453638447698451}
