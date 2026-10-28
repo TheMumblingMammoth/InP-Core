@@ -239,13 +239,13 @@ public class Body : MonoBehaviour
         originPositions[0] = HeadHeight(skinID);
         originPositions[2] = new Vector2(0, - (ShoulderSize(skinID) + ForearmSize(skinID)));
         originPositions[3] = new Vector2(0, - (ShoulderSize(skinID) + ForearmSize(skinID)));
-        originPositions[4] = new Vector2(0, - height);
         originPositions[5] = new Vector2(0, - height);
+        originPositions[6] = new Vector2(0, - height);
         //  ShoulderWidth(skinID)
         limbs[2].transform.localPosition = new Vector2(ShoulderWidth(skinID), limbs[2].transform.localPosition.y);
         limbs[3].transform.localPosition = new Vector2(-ShoulderWidth(skinID), limbs[3].transform.localPosition.y);
-        limbs[4].transform.localPosition = new Vector2(HipWidth(skinID), limbs[4].transform.localPosition.y);
-        limbs[5].transform.localPosition = new Vector2(-HipWidth(skinID), limbs[5].transform.localPosition.y);
+        limbs[5].transform.localPosition = new Vector2(HipWidth(skinID), limbs[5].transform.localPosition.y);
+        limbs[6].transform.localPosition = new Vector2(-HipWidth(skinID), limbs[6].transform.localPosition.y);
           
         foreach (Limb limb in limbs)
             limb.SetSkin(skinID);
@@ -381,7 +381,7 @@ public class Body : MonoBehaviour
         RHip=16, RKnee=12, RFoot = 20,
         LShoulder=22, LForearm=26, LHand = 30,
         RShoulder=24, RForearm=28, RHand = 32,
-        Torso = 0, Head = 2, Sex = 3
+        Torso = 0, Head = 2, Sex = 3, Hips = -1
     }
     public static string PartType(BodyPart part){
         switch (part)
@@ -392,6 +392,7 @@ public class Body : MonoBehaviour
             case BodyPart.LKnee: return "Knee";
             case BodyPart.RHip:
             case BodyPart.LHip: return "Hip";
+            case BodyPart.Hips: return "Hips";
             case BodyPart.RForearm:
             case BodyPart.LForearm: return "Forearm";
             case BodyPart.RShoulder:

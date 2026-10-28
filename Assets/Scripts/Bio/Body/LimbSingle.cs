@@ -16,6 +16,7 @@ public class LimbSingle : Limb
     public override Vector2 GetPos(){   return transform.localPosition; }
     public override void SetSkin(int skinID) 
     {   
+        if(type == Body.BodyPart.Hips)  return;
         sprite.sprite = BodyClip.skins.ClipFor(Body.PartType(type).ToString() + (flipY? "Back" : "")).frames[skinID].pic; 
     }
     public override void SetOrder(int order) {   sprite.sortingOrder = order + (int)type;    }

@@ -148,6 +148,10 @@ public class IsoGrid : MonoBehaviour
 
     #endregion Click
 
+    [SerializeField] bool wet_dry_color; public static bool WetDryColor(){ return proxy.wet_dry_color;}
+    [SerializeField] bool height_alpha; public static bool HeightAlpha(){ return proxy.height_alpha;}
+    [SerializeField] bool height_white; public static bool HeightWhite(){ return proxy.height_white;}
+
     #region 1LinAlg
 
         public static Vector3Int IsoToTile(Vector3Int pos)

@@ -211,17 +211,24 @@ public class IsoGridTile : MonoBehaviour
         if (blockData == null)
             return;
         
-        float a = 0.5f + 0.5f * (pos.z + (blockData.full ? 0.5f : 0))/World.chunkSize.z;
-        float br = a, bg = a, bb = a, ba = 1f;
-        float cr = a, cg = a, cb = a, ca = 1f;
+        float a = 1f; 
+        if(IsoGrid.HeightAlpha())
+            a -= pos.z > PlayerControlUnit.GetZ() + 1 ? (pos.z - PlayerControlUnit.GetZ()) / 8f : 0;
+        float w = 0.6f;
+        if(IsoGrid.HeightWhite())
+            w += 0.4f * (pos.z + (blockData.full ? 0.5f : 0))/World.chunkSize.z;
+        else
+            w += 0.4f;
+        float br = w, bg = w, bb = w, ba = a;
+        float cr = w, cg = w, cb = w, ca = a;
         float dry = World.GetTemp(pos) + World.GetWet(pos);
         // - dry * (blockData.IsBlockWetable() ? 1 : 0)
-        if (blockData.IsBlockWetable())
+        if (blockData.IsBlockWetable() && IsoGrid.WetDryColor())
         {
             br += dry*0.6f;
             bb -= dry*0.6f;
         }
-        if (blockData.IsCarpetWetable())
+        if (blockData.IsCarpetWetable() && IsoGrid.WetDryColor())
         {
             if(dry > 1f) dry -= 1f; 
             cr += dry*0.6f;
